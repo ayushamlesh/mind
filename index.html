@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Marry Me?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffccd5;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            color: #d63384;
+        }
+        p {
+            color: #6c757d;
+        }
+        button {
+            background-color: #d63384;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #c2185b;
+        }
+        .hidden {
+            display: none;
+        }
+        #proposalBox h2 {
+            color: #d63384;
+        }
+        .yes {
+            background-color: #28a745;
+        }
+        .no {
+            background-color: #dc3545;
+        }
+        .kiss-container {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
+        .butterfly {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('butterfly.png');
+            background-size: cover;
+            animation: fly 10s linear infinite;
+        }
+        @keyframes fly {
+            0% { transform: translate(-50px, 100vh) rotate(0deg); }
+            100% { transform: translate(100vw, -100px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Happy Valentine's Day, My Love!</h1>
+        <p>You make my world beautiful, and I can't imagine my life without you.</p>
+        <button id="surpriseButton">Click for a Surprise</button>
+        <div id="surpriseBox" class="hidden">
+            <img src="heart.png" alt="Heart">
+            <p>Every moment with you is magical!</p>
+            <button id="proposalButton">Reveal the Question</button>
+        </div>
+        <div id="proposalBox" class="hidden">
+            <h2>Will You Marry Me?</h2>
+            <button class="yes">Yes</button>
+            <button class="no">No</button>
+        </div>
+        <div class="kiss-container" id="kissContainer"></div>
+    </div>
+    <script>
+        document.getElementById("surpriseButton").addEventListener("click", function() {
+            document.getElementById("surpriseBox").classList.remove("hidden");
+            this.style.display = "none";
+        });
+        document.getElementById("proposalButton").addEventListener("click", function() {
+            document.getElementById("proposalBox").classList.remove("hidden");
+            this.style.display = "none";
+            addButterflies();
+        });
+        document.querySelector(".yes").addEventListener("click", function() {
+            const kissContainer = document.getElementById("kissContainer");
+            kissContainer.innerHTML = "";
+            for (let i = 0; i < 100; i++) {
+                const kiss = document.createElement("span");
+                kiss.textContent = "😘";
+                kissContainer.appendChild(kiss);
+            }
+        });
+        document.querySelector(".no").addEventListener("click", function() {
+            alert("Oh no! Please 🥺🥺🥺 Think again...");
+        });
+        function addButterflies() {
+            for (let i = 0; i < 5; i++) {
+                let butterfly = document.createElement("div");
+                butterfly.classList.add("butterfly");
+                butterfly.style.left = Math.random() * window.innerWidth + "px";
+                document.body.appendChild(butterfly);
+            }
+        }
+    </script>
+</body>
+</html>
