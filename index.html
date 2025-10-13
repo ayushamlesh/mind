@@ -1,126 +1,424 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will be me affu</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffccd5;
-            text-align: center;
-            padding: 20px;
-            overflow: hidden;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            position: relative;
-            z-index: 1;
-        }
-        h1 {
-            color: #d63384;
-        }
-        p {
-            color: #6c757d;
-        }
-        button {
-            background-color: #d63384;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #c2185b;
-        }
-        .hidden {
-            display: none;
-        }
-        #proposalBox h2 {
-            color: #d63384;
-        }
-        .yes {
-            background-color: #28a745;
-        }
-        .no {
-            background-color: #dc3545;
-        }
-        .kiss-container {
-            font-size: 2rem;
-            margin-top: 20px;
-        }
-        .butterfly {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-image: url('butterfly.png');
-            background-size: cover;
-            animation: fly 10s linear infinite;
-        }
-        @keyframes fly {
-            0% { transform: translate(-50px, 100vh) rotate(0deg); }
-            100% { transform: translate(100vw, -100px) rotate(360deg); }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Business Wellness & Leadership</title>
+<style>
+  /* General Styles */
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #F5F1E9;
+    color: #333;
+    min-height: 100vh;
+  }
+  header {
+    background-color: #607D8B;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header h1 {
+    font-family: 'Merriweather', serif;
+    color: #F5F1E9;
+    margin: 0;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  nav a {
+    color: #F5F1E9;
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  main {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    min-height: 70vh;
+  }
+  footer {
+    background-color: #607D8B;
+    color: #F5F1E9;
+    text-align: center;
+    padding: 1rem;
+  }
+  /* Hero Section */
+  .hero {
+    background: url('https://example.com/serene-retreat.jpg') no-repeat center center/cover;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #F5F1E9;
+    padding: 0 1rem;
+    position: relative;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(81, 81, 81, 0.5);
+    border-radius: 8px;
+    z-index: 1;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+  .hero-content h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+  }
+  .hero-content p {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+  .btn-primary {
+    background-color: #D16A47;
+    color: #F5F1E9;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 3px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0 0.5rem;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+  }
+  .btn-primary:hover {
+    background-color: #ae5737;
+  }
+  /* Content Sections */
+  h2.section-title {
+    font-family: 'Merriweather', serif;
+    color: #9CAF88;
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid #D16A47;
+    display: inline-block;
+    padding-bottom: 0.3rem;
+  }
+  .about-content, .locations-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+  }
+  .about-text, .location-text {
+    flex: 1 1 300px;
+  }
+  .about-image, .location-image {
+    flex: 1 1 300px;
+  }
+  .about-image img, .location-image img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  .services {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .services .card {
+    background: white;
+    flex: 1 1 280px;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  .services .card h3 {
+    font-family: 'Merriweather', serif;
+    margin-bottom: 1rem;
+    color: #9CAF88;
+  }
+  .services .card p {
+    margin-bottom: 1rem;
+  }
+  .services .card a {
+    color: #D16A47;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .testimonials {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  .testimonial {
+    margin-bottom: 1.5rem;
+  }
+  .testimonial p {
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+  .testimonial cite {
+    font-weight: 600;
+    color: #607D8B;
+  }
+  .insights {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .insight-article {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  }
+  .insight-article h4 {
+    margin: 0 0 0.5rem 0;
+  }
+  .insight-article p {
+    margin: 0;
+  }
+  form label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+  }
+  form input, form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.3rem;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  form button {
+    margin-top: 1rem;
+    background-color: #D16A47;
+    color: #F5F1E9;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  form button:hover {
+    background-color: #ae5737;
+  }
+  .hidden {
+    display: none;
+  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    .about-content, .locations-content {
+      flex-direction: column;
+    }
+    .services {
+      flex-direction: column;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Happy Valentine's Day, My Love!</h1>
-        <p>You make my world beautiful, and I can't imagine my life without you. sachi Affu</p>
-        <button id="surpriseButton">Kiss me </button>
-        <div id="surpriseBox" class="hidden">
-            <img src="heart.png" alt="Heart">
-            <p>Every moment with you is magical!</p>
-            <p>Tum sath ho to full si lagti hai life. <br>
-                Ruth kr jati ho to lagi hai blank space in life. <br>
-                Ho to bohot cute magar gulu gulu ho meri. sath raho rahete raho. <br>
-            Bas yahi bhagwan se mangta hu jab tak rahe ye teeth in mouth raho tum sath chahiye day ho ya night.😚😚🍨</p>
-            <button id="proposalButton">Reveal the Question</button>
-        </div>
-        <div id="proposalBox" class="hidden">
-            <h2>Will You be me Marry Me?</h2>
-            
-            <button class="no">No</button>
-            <button class="yes">Yes</button>
-        </div>
-        <div class="kiss-container" id="kissContainer"></div>
+
+<header>
+  <h1 onclick="showPage('home')">[BusinessName]</h1>
+  <nav>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('about')">About</a>
+    <a onclick="showPage('services')">Services</a>
+    <a onclick="showPage('locations')">Locations</a>
+    <a onclick="showPage('testimonials')">Testimonials</a>
+    <a onclick="showPage('insights')">Insights</a>
+    <a onclick="showPage('contact')">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <!-- Home -->
+  <section id="home" class="page">
+    <div class="hero">
+      <div class="hero-content">
+        <h2>Where Indian Wisdom Meets Modern Leadership</h2>
+        <p>Ancient mind-body-soul harmony combined with cutting-edge corporate wellness and leadership transformation</p>
+        <button class="btn-primary" onclick="showPage('services')">Explore Services</button>
+        <button class="btn-primary" onclick="showPage('contact')">Book a Consultation</button>
+      </div>
     </div>
-    <script>
-        document.getElementById("surpriseButton").addEventListener("click", function() {
-            document.getElementById("surpriseBox").classList.remove("hidden");
-            this.style.display = "none";
-        });
-        document.getElementById("proposalButton").addEventListener("click", function() {
-            document.getElementById("proposalBox").classList.remove("hidden");
-            this.style.display = "none";
-            addButterflies();
-        });
-        document.querySelector(".yes").addEventListener("click", function() {
-            const kissContainer = document.getElementById("kissContainer");
-            kissContainer.innerHTML = "";
-            for (let i = 0; i < 100; i++) {
-                const kiss = document.createElement("span");
-                kiss.textContent = "😍🧬😘💞";
-                kissContainer.appendChild(kiss);
-            }
-        });
-        document.querySelector(".no").addEventListener("click", function() {
-            alert("Oh no! Please affu 🥺🥺🥺 Think again...");
-        });
-        function addButterflies() {
-            for (let i = 0; i < 5; i++) {
-                let butterfly = document.createElement("div");
-                butterfly.classList.add("butterfly");
-                butterfly.style.left = Math.random() * window.innerWidth + "px";
-                document.body.appendChild(butterfly);
-            }
-        }
-    </script>
+    <section class="about">
+      <h2 class="section-title">About Us</h2>
+      <div class="about-content">
+        <div class="about-text">
+          <p>We fuse ancient Indian philosophies of Ayurveda and mind-body-soul wellness with modern executive leadership development to empower India’s top corporate and individual clients. Our operational hubs in Bengaluru’s tech ecosystem and Kerala’s authentic Ayurveda destinations create a unique experience.</p>
+        </div>
+        <div class="about-image">
+          <img src="https://example.com/about-image.jpg" alt="Wellness and leadership" />
+        </div>
+      </div>
+    </section>
+    <section class="services">
+      <h2 class="section-title">Our Services</h2>
+      <div class="services">
+        <div class="card">
+          <h3>Corporate Wellness</h3>
+          <p>Transform your corporate culture with holistic wellness programs tailored for executives and teams.</p>
+          <a href="#" onclick="showPage('services')">Learn More</a>
+        </div>
+        <div class="card">
+          <h3>Executive Leadership</h3>
+          <p>Elevate leadership skills by integrating age-old wisdom with modern business practices and coaching.</p>
+          <a href="#" onclick="showPage('services')">Learn More</a>
+        </div>
+        <div class="card">
+          <h3>Wellness Tourism</h3>
+          <p>Experience authentic Ayurveda retreats in Kerala combined with transformative corporate wellness journeys.</p>
+          <a href="#" onclick="showPage('services')">Learn More</a>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="page hidden">
+    <h2 class="section-title">About Us</h2>
+    <div class="about-content">
+      <div class="about-text">
+        <p>Our vision is to unite India's time-tested mind-body-soul traditions with modern corporate leadership development, fostering holistic growth for organizations and individuals alike. Headquartered in Bengaluru's innovation-focused startup ecosystem and Kerala's authentic Ayurveda heritage, we deliver transformative experiences that energize and empower.</p>
+        <p>Our leadership team combines deep expertise in Ayurveda, meditation, executive coaching, and business transformation, dedicated to creating measurable impact.</p>
+      </div>
+      <div class="about-image">
+        <img src="https://example.com/leadership-team.jpg" alt="Leadership Team" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="page hidden">
+    <h2 class="section-title">Our Services</h2>
+    <div class="services">
+      <div class="card">
+        <h3>Corporate Wellness Programs</h3>
+        <p>Custom-designed wellness programs focusing on mental well-being, Ayurveda-based lifestyle coaching, stress management, and productivity enhancement for corporate clients.</p>
+      </div>
+      <div class="card">
+        <h3>Executive Leadership Development</h3>
+        <p>Leadership workshops, coaching sessions, and immersive retreats that blend ancient Indian wisdom and modern leadership practices to foster visionary leaders.</p>
+      </div>
+      <div class="card">
+        <h3>Wellness Tourism & Retreats</h3>
+        <p>Authentic Ayurveda retreat packages in Kerala combined with corporate wellness journeys to rejuvenate mind, body, and soul.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Locations -->
+  <section id="locations" class="page hidden">
+    <h2 class="section-title">Our Locations</h2>
+    <div class="locations-content">
+      <div class="location-text">
+        <h3>Bengaluru Hub</h3>
+        <p>Situated in the heart of India's startup and technology ecosystem, our Bengaluru hub focuses on innovation, corporate partnerships, and executive coaching leveraging cutting-edge business insights alongside traditional wellness principles.</p>
+      </div>
+      <div class="location-image">
+        <img src="https://example.com/bengaluru-hub.jpg" alt="Bengaluru Hub" />
+      </div>
+    </div>
+    <div class="locations-content" style="margin-top:2rem;">
+      <div class="location-image">
+        <img src="https://example.com/kerala-retreat.jpg" alt="Kerala Ayurveda Retreat" />
+      </div>
+      <div class="location-text">
+        <h3>Kerala Hub</h3>
+        <p>Embedded in Kerala’s tranquil and authentic Ayurveda environment, our retreat center offers transformative wellness tourism experiences blending nature, healing, and leadership insights in harmony.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="page hidden">
+    <h2 class="section-title">Testimonials</h2>
+    <div class="testimonials">
+      <div class="testimonial">
+        <p>"Their holistic approach combining Ayurveda and executive coaching completely transformed our leadership team's effectiveness and well-being."</p>
+        <cite>- R. Mehta, CEO, Leading Tech Firm</cite>
+      </div>
+      <div class="testimonial">
+        <p>"The Kerala retreat was a life-changing experience, offering deep relaxation and insights that improved both my personal and professional life."</p>
+        <cite>- A. Kumar, Senior Executive</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- Insights -->
+  <section id="insights" class="page hidden">
+    <h2 class="section-title">Insights & Articles</h2>
+    <div class="insights">
+      <article class="insight-article">
+        <h4>Integrating Ayurveda into Corporate Wellness</h4>
+        <p>Discover how ancient wisdom can rejuvenate today's stressful corporate environments and boost productivity.</p>
+      </article>
+      <article class="insight-article">
+        <h4>Leadership Lessons from Indian Philosophy</h4>
+        <p>Learn how traditional Indian mind-body-soul practices inform modern leadership techniques and resilience.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="page hidden">
+    <h2 class="section-title">Contact Us</h2>
+    <form id="contactForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required />
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>© 2025 [BusinessName]. All rights reserved.</p>
+</footer>
+
+<script>
+  // Simple page switcher for the single-page layout
+  function showPage(pageId) {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => {
+      page.classList.add('hidden');
+    });
+    const activePage = document.getElementById(pageId);
+    if (activePage) {
+      activePage.classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+  }
+
+  // Handle contact form submission
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Thank you for contacting us! We will get back to you soon.');
+    this.reset();
+  });
+
+  // Initial page
+  showPage('home');
+</script>
+
 </body>
-</html>
+    </html>
