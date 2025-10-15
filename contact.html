@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact - MindfulSpace</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f0faf8;
+      color: #264d40;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #a8dadc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1b3a33;
+      letter-spacing: 2px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+      font-size: 1.1rem;
+    }
+
+    nav a {
+      color: #1b3a33;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    nav a:hover, nav a:focus {
+      background: #457b74;
+      color: #f0faf8;
+      outline: none;
+    }
+
+    nav a.active {
+      background: #264d40;
+      color: #f0faf8;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto 64px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #4a9b8e, #70a899);
+      color: #f0faf8;
+      border-radius: 16px;
+      margin-bottom: 48px;
+    }
+
+    .hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin: 48px 0;
+    }
+
+    .contact-form {
+      background: #d2f1e4;
+      padding: 32px;
+      border-radius: 16px;
+    }
+
+    .contact-info {
+      padding: 32px;
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #1b3a33;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #4a9b8e;
+      padding-bottom: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #264d40;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #a8dadc;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #4a9b8e;
+    }
+
+    .form-group textarea {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .btn-primary {
+      background: #4a9b8e;
+      color: #f0faf8;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: #2c5f4f;
+    }
+
+    .contact-details {
+      margin-bottom: 32px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #d2f1e4;
+      border-radius: 8px;
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      background: #4a9b8e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      color: #f0faf8;
+      font-weight: 600;
+    }
+
+    .contact-text {
+      flex: 1;
+    }
+
+    .contact-text strong {
+      display: block;
+      color: #1b3a33;
+      margin-bottom: 4px;
+    }
+
+    .faq-section {
+      background: #d2f1e4;
+      padding: 32px;
+      border-radius: 16px;
+      margin: 48px 0;
+    }
+
+    .faq-item {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #a8dadc;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .faq-question {
+      font-weight: 600;
+      color: #1b3a33;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .faq-answer {
+      color: #264d40;
+    }
+
+    footer {
+      background: #a8dadc;
+      padding: 28px 20px;
+      text-align: center;
+      color: #1b3a33;
+      font-weight: 600;
+      margin-top: auto;
+    }
+
+    .social-icons {
+      margin: 16px 0 8px;
+    }
+
+    .social-icons img {
+      width: 32px;
+      height: 32px;
+      margin: 0 12px;
+      filter: brightness(0) invert(0.6);
+      transition: filter 0.3s ease;
+    }
+
+    .social-icons img:hover {
+      filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 16px;
+      }
+      nav {
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      main {
+        margin: 20px 12px 48px;
+      }
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">MindfulSpace</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="individuals.html">For Individuals</a>
+      <a href="organizations.html">For Organizations</a>
+      <a href="resorts.html">For Resorts</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Get In Touch</h1>
+      <p>Ready to start your mindfulness journey? We're here to help you find the perfect program for your needs.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-form">
+        <h2>Send Us a Message</h2>
+        <form action="#" method="post">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          
+          <div class="form-group">
+            <label for="inquiry-type">Type of Inquiry</label>
+            <select id="inquiry-type" name="inquiry-type" required>
+              <option value="">Select inquiry type</option>
+              <option value="individual">Individual Programs</option>
+              <option value="corporate">Corporate Wellness</option>
+              <option value="resort">Resort Partnership</option>
+              <option value="general">General Information</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about your needs and how we can help..." required></textarea>
+          </div>
+          
+          <button type="submit" class="btn-primary">Send Message</button>
+        </form>
+      </div>
+
+      <div class="contact-info">
+        <h2>Contact Information</h2>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div class="contact-text">
+              <strong>Phone</strong>
+              +1 (555) 123-CALM
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div class="contact-text">
+              <strong>Email</strong>
+              hello@mindfulspace.com
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div class="contact-text">
+              <strong>Address</strong>
+              123 Serenity Lane<br>
+              Wellness District, CA 90210
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">🕒</div>
+            <div class="contact-text">
+              <strong>Hours</strong>
+              Monday-Friday: 8AM-7PM<br>
+              Saturday: 9AM-5PM<br>
+              Sunday: Closed
+            </div>
+          </div>
+        </div>
+
+        <h2>Follow Us</h2>
+        <p>Stay connected for daily mindfulness tips, program updates, and wellness inspiration.</p>
+        <div class="social-icons" style="margin-top: 16px;">
+          <img src="https://cdn.simpleicons.org/instagram/264d40" alt="Instagram" />
+          <img src="https://cdn.simpleicons.org/facebook/264d40" alt="Facebook" />
+          <img src="https://cdn.simpleicons.org/linkedin/264d40" alt="LinkedIn" />
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question">What makes your programs different?</div>
+        <div class="faq-answer">We combine evidence-based mindfulness practices with personalized approaches tailored to individual and organizational needs, ensuring authentic and effective results.</div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">Do you offer virtual sessions?</div>
+        <div class="faq-answer">Yes, we offer both in-person and virtual sessions for individuals and organizations to accommodate different preferences and locations.</div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">How long does it take to see results?</div>
+        <div class="faq-answer">Many clients report feeling more centered after just a few sessions, with significant improvements typically seen within 4-6 weeks of consistent practice.</div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">What if I'm completely new to mindfulness?</div>
+        <div class="faq-answer">Perfect! Our programs are designed for all experience levels, from complete beginners to advanced practitioners looking to deepen their practice.</div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="social-icons">
+      <img src="https://cdn.simpleicons.org/instagram/264d40" alt="Instagram" />
+      <img src="https://cdn.simpleicons.org/facebook/264d40" alt="Facebook" />
+      <img src="https://cdn.simpleicons.org/linkedin/264d40" alt="LinkedIn" />
+    </div>
+    © 2025 MindfulSpace. All rights reserved.
+  </footer>
+</body>
+</html>
