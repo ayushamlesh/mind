@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us - MindfulSpace</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f0faf8;
+      color: #264d40;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #a8dadc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1b3a33;
+      letter-spacing: 2px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+      font-size: 1.1rem;
+    }
+
+    nav a {
+      color: #1b3a33;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    nav a:hover, nav a:focus {
+      background: #457b74;
+      color: #f0faf8;
+      outline: none;
+    }
+
+    nav a.active {
+      background: #264d40;
+      color: #f0faf8;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto 64px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #70a899, #2c5f4f);
+      color: #f0faf8;
+      border-radius: 16px;
+      margin-bottom: 48px;
+    }
+
+    .hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #1b3a33;
+      margin: 48px 0 24px;
+      border-bottom: 2px solid #4a9b8e;
+      padding-bottom: 8px;
+    }
+
+    .mission-section {
+      background: #d2f1e4;
+      padding: 32px;
+      border-radius: 16px;
+      margin: 32px 0;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin: 32px 0;
+    }
+
+    .team-member {
+      background: #d2f1e4;
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 6px 12px rgba(38,77,64,0.12);
+      transition: transform 0.3s ease;
+    }
+
+    .team-member:hover {
+      transform: translateY(-6px);
+    }
+
+    .team-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #4a9b8e;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f0faf8;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .team-member h3 {
+      color: #264d40;
+      margin-bottom: 8px;
+    }
+
+    .team-member .role {
+      color: #2c5f4f;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .team-member .bio {
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+
+    .team-member .credentials {
+      font-size: 0.9rem;
+      color: #457b74;
+      font-style: italic;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 32px 0;
+    }
+
+    .value-card {
+      background: #4a9b8e;
+      color: #f0faf8;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .value-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, #4a9b8e, #2c5f4f);
+      color: #f0faf8;
+      padding: 48px 32px;
+      border-radius: 16px;
+      text-align: center;
+      margin: 48px 0;
+    }
+
+    .btn-primary {
+      background: #f0faf8;
+      color: #2c5f4f;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      margin-top: 16px;
+    }
+
+    .btn-primary:hover {
+      background: #d2f1e4;
+    }
+
+    footer {
+      background: #a8dadc;
+      padding: 28px 20px;
+      text-align: center;
+      color: #1b3a33;
+      font-weight: 600;
+      margin-top: auto;
+    }
+
+    .social-icons {
+      margin: 16px 0 8px;
+    }
+
+    .social-icons img {
+      width: 32px;
+      height: 32px;
+      margin: 0 12px;
+      filter: brightness(0) invert(0.6);
+      transition: filter 0.3s ease;
+    }
+
+    .social-icons img:hover {
+      filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 16px;
+      }
+      nav {
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      main {
+        margin: 20px 12px 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">MindfulSpace</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="individuals.html">For Individuals</a>
+      <a href="organizations.html">For Organizations</a>
+      <a href="resorts.html">For Resorts</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Our Story & Mission</h1>
+      <p>Bringing ancient wisdom to modern wellness needs through evidence-based mindfulness practices.</p>
+    </div>
+
+    <div class="mission-section">
+      <h2>Our Mission</h2>
+      <p>At MindfulSpace, we believe that mindfulness isn't just a practice—it's a way of living that transforms individuals, organizations, and communities. Founded on the principle that everyone deserves access to inner peace and mental clarity, we've dedicated ourselves to making authentic mindfulness practices accessible and practical for modern life.</p>
+      
+      <p>Our approach combines traditional wisdom with contemporary science, ensuring that our programs are both deeply rooted in authentic practices and backed by current research in psychology and neuroscience.</p>
+    </div>
+
+    <h2>Meet Our Team</h2>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="team-photo">SC</div>
+        <h3>Sarah Chen</h3>
+        <div class="role">Founder & Lead Mindfulness Coach</div>
+        <div class="bio">With over 20 years of mindfulness practice and teaching experience, Sarah founded MindfulSpace to make authentic wellness practices accessible to everyone. She has trained with renowned teachers across the globe.</div>
+        <div class="credentials">Certified MBSR Instructor, Licensed Professional Counselor</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">MR</div>
+        <h3>Michael Rodriguez</h3>
+        <div class="role">Corporate Wellness Director</div>
+        <div class="bio">Former Fortune 500 executive turned wellness expert, Michael brings unique insight into corporate culture and organizational transformation through mindfulness practices.</div>
+        <div class="credentials">MBA, Certified Corporate Wellness Specialist</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">AP</div>
+        <h3>Dr. Anita Patel</h3>
+        <div class="role">Stress Management Specialist</div>
+        <div class="bio">Research psychologist specializing in mindfulness-based interventions. Dr. Patel ensures all our programs are grounded in current scientific understanding of mental health and wellness.</div>
+        <div class="credentials">PhD Psychology, Licensed Clinical Psychologist</div>
+      </div>
+    </div>
+
+    <h2>Our Values</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <h3>Authenticity</h3>
+        <p>We honor traditional wisdom while adapting practices for modern life, ensuring every program maintains its authentic essence.</p>
+      </div>
+      <div class="value-card">
+        <h3>Accessibility</h3>
+        <p>Mindfulness should be available to everyone. We create programs that fit diverse lifestyles, budgets, and experience levels.</p>
+      </div>
+      <div class="value-card">
+        <h3>Evidence-Based</h3>
+        <p>All our practices are supported by scientific research, ensuring you receive techniques proven to create lasting positive change.</p>
+      </div>
+      <div class="value-card">
+        <h3>Compassion</h3>
+        <p>We approach every interaction with kindness and understanding, creating safe spaces for growth and transformation.</p>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <h2>Ready to Transform Your Life?</h2>
+      <p>Whether you're seeking personal growth, corporate transformation, or partnership opportunities, we're here to guide your journey toward greater mindfulness and well-being.</p>
+      <a href="contact.html" class="btn-primary">Get Started Today</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="social-icons">
+      <img src="https://cdn.simpleicons.org/instagram/264d40" alt="Instagram" />
+      <img src="https://cdn.simpleicons.org/facebook/264d40" alt="Facebook" />
+      <img src="https://cdn.simpleicons.org/linkedin/264d40" alt="LinkedIn" />
+    </div>
+    © 2025 MindfulSpace. All rights reserved.
+  </footer>
+</body>
+</html>
