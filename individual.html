@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mindfulness for Individuals - Mindful Center</title>
+    <style>
+        /* CSS styles for header, hero, flip cards, testimonials, footer, etc. */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+        }
+        /* Additional detailed CSS omitted here for brevity */
+        /* Flip card styles with hover flip effect */
+        .flip-card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        /* Front and back faces styling */
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .flip-card-front {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+        }
+        .flip-card-back {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">Mindful Center</div>
+        <ul class="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#programs">Programs</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Mindfulness for Individuals</h1>
+        <p>Personal Growth, Stress Relief, and Wellness Through Mindfulness</p>
+        <a href="#programs" class="cta-button">Begin Your Journey</a>
+    </div>
+</section>
+
+<main class="main-content">
+    <div class="intro-text">
+        <p>Discover the transformative power of mindfulness tailored specifically for your personal journey...</p>
+    </div>
+
+    <div class="cards-container">
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="card-icon">🌱</div>
+                    <div class="card-title">Beginners Welcome</div>
+                    <div class="card-description">Perfect for those new to mindfulness</div>
+                </div>
+                <div class="flip-card-back">Start your mindfulness journey with our beginner-friendly sessions. No experience needed...</div>
+            </div>
+        </div>
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-title">Individual Programs</div>
+                    <div class="card-description">Customized programs for your needs</div>
+                </div>
+                <div class="flip-card-back">Personalized meditation courses, stress management workshops, and more...</div>
+            </div>
+        </div>
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="card-icon">🤝</div>
+                    <div class="card-title">Personal Coaching</div>
+                    <div class="card-description">One-on-one guidance and support</div>
+                </div>
+                <div class="flip-card-back">One-on-one guidance from certified mindfulness instructors tailored for you...</div>
+            </div>
+        </div>
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="card-icon">📚</div>
+                    <div class="card-title">Resources & Tools</div>
+                    <div class="card-description">Everything you need to practice</div>
+                </div>
+                <div class="flip-card-back">Access guided meditations, exercises, readings, and daily practice tips...</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Further sections for testimonials and footer omitted for brevity -->
+
+</body>
+</html>
