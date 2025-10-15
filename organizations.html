@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For Organizations - MindfulSpace</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f0faf8;
+      color: #264d40;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #a8dadc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1b3a33;
+      letter-spacing: 2px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+      font-size: 1.1rem;
+    }
+
+    nav a {
+      color: #1b3a33;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    nav a:hover, nav a:focus {
+      background: #457b74;
+      color: #f0faf8;
+      outline: none;
+    }
+
+    nav a.active {
+      background: #264d40;
+      color: #f0faf8;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto 64px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #4a9b8e, #2c5f4f);
+      color: #f0faf8;
+      border-radius: 16px;
+      margin-bottom: 48px;
+    }
+
+    .hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #1b3a33;
+      margin: 48px 0 24px;
+      border-bottom: 2px solid #4a9b8e;
+      padding-bottom: 8px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .service-card {
+      background: #d2f1e4;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 6px 12px rgba(38,77,64,0.12);
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .service-card h3 {
+      color: #264d40;
+      margin-bottom: 12px;
+      font-size: 1.3rem;
+    }
+
+    .service-card p {
+      margin-bottom: 16px;
+    }
+
+    .price {
+      font-weight: 700;
+      color: #2c5f4f;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+
+    .features {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .features li {
+      padding: 4px 0;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .features li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #4a9b8e;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #4a9b8e;
+      color: #f0faf8;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #2c5f4f;
+    }
+
+    .testimonials {
+      background: #d2f1e4;
+      padding: 32px;
+      border-radius: 16px;
+      margin: 48px 0;
+    }
+
+    .testimonial {
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .testimonial cite {
+      font-weight: 600;
+      color: #2c5f4f;
+      font-style: normal;
+    }
+
+    footer {
+      background: #a8dadc;
+      padding: 28px 20px;
+      text-align: center;
+      color: #1b3a33;
+      font-weight: 600;
+      margin-top: auto;
+    }
+
+    .social-icons {
+      margin: 16px 0 8px;
+    }
+
+    .social-icons img {
+      width: 32px;
+      height: 32px;
+      margin: 0 12px;
+      filter: brightness(0) invert(0.6);
+      transition: filter 0.3s ease;
+    }
+
+    .social-icons img:hover {
+      filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 16px;
+      }
+      nav {
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      main {
+        margin: 20px 12px 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">MindfulSpace</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="individuals.html">For Individuals</a>
+      <a href="organizations.html" class="active">For Organizations</a>
+      <a href="resorts.html">For Resorts</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Corporate Wellness & Mindfulness</h1>
+      <p>Transform your workplace culture with evidence-based wellness programs that reduce stress, improve focus, and enhance team performance.</p>
+    </div>
+
+    <h2>Our Corporate Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Corporate Wellness Workshops</h3>
+        <p>Interactive workshops for teams focusing on stress reduction, mindful communication, and productivity enhancement.</p>
+        <div class="price">Starting at $2,500 per workshop</div>
+        <ul class="features">
+          <li>Onsite or virtual delivery</li>
+          <li>Customizable content</li>
+          <li>Employee engagement activities</li>
+          <li>Measurable outcomes</li>
+        </ul>
+        <a href="contact.html" class="btn-primary">Request Quote</a>
+      </div>
+
+      <div class="service-card">
+        <h3>Team Meditation Programs</h3>
+        <p>Regular guided meditation sessions for employees with app subscriptions for personal practice and progress tracking.</p>
+        <div class="price">$150 per employee/month</div>
+        <ul class="features">
+          <li>Daily guided sessions</li>
+          <li>Mobile app access</li>
+          <li>Progress tracking</li>
+          <li>Team challenges</li>
+        </ul>
+        <a href="contact.html" class="btn-primary">Start Program</a>
+      </div>
+
+      <div class="service-card">
+        <h3>Leadership Mindfulness Training</h3>
+        <p>Executive coaching integrating emotional intelligence and resilient leadership practices for better decision-making.</p>
+        <div class="price">$300 per executive session</div>
+        <ul class="features">
+          <li>Executive-focused content</li>
+          <li>Decision clarity techniques</li>
+          <li>Emotional intelligence</li>
+          <li>Leadership skill development</li>
+        </ul>
+        <a href="contact.html" class="btn-primary">Book Training</a>
+      </div>
+    </div>
+
+    <div class="testimonials">
+      <h2>What Our Corporate Clients Say</h2>
+      <div class="testimonial">
+        <p>"Our team productivity increased 25% after implementing the mindfulness program. Employee satisfaction scores are at an all-time high."</p>
+        <cite>- Lisa Wong, HR Director, TechCorp</cite>
+      </div>
+      <div class="testimonial">
+        <p>"The leadership training transformed how our executives handle pressure and make decisions. Highly recommended for any growing company."</p>
+        <cite>- Robert Johnson, CEO, Innovation Inc</cite>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="social-icons">
+      <img src="https://cdn.simpleicons.org/instagram/264d40" alt="Instagram" />
+      <img src="https://cdn.simpleicons.org/facebook/264d40" alt="Facebook" />
+      <img src="https://cdn.simpleicons.org/linkedin/264d40" alt="LinkedIn" />
+    </div>
+    © 2025 MindfulSpace. All rights reserved.
+  </footer>
+</body>
+</html>
