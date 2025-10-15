@@ -1,317 +1,1186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MindfulSpace - Mindfulness & Wellness Center</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap');
-
-    /* Reset */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background: #f0faf8;
-      color: #264d40;
-      line-height: 1.6;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* Header */
-    header {
-      background: #a8dadc;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 48px;
-      font-family: 'Montserrat', sans-serif;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      flex-wrap: wrap;
-      z-index: 10;
-    }
-
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #1b3a33;
-      letter-spacing: 2px;
-      cursor: default;
-    }
-
-    nav {
-      display: flex;
-      gap: 32px;
-      font-size: 1.1rem;
-    }
-
-    nav a {
-      color: #1b3a33;
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s ease;
-      padding: 6px 12px;
-      border-radius: 8px;
-      outline-offset: 2px;
-    }
-
-    nav a:hover,
-    nav a:focus {
-      background: #457b74;
-      color: #f0faf8;
-      outline: none;
-      cursor: pointer;
-    }
-
-    /* Hero Section */
-    .hero {
-      position: relative;
-      width: 100%;
-      min-height: 360px;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #f0faf8;
-      padding: 24px 16px;
-      text-align: center;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 700;
-      letter-spacing: 1.8px;
-      box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.28);
-    }
-
-    /* Questions Section */
-    .questions {
-      max-width: 1080px;
-      margin: 48px auto 24px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-      gap: 28px;
-      padding: 0 20px;
-    }
-
-    .question-card {
-      background: #d2f1e4;
-      padding: 28px 24px;
-      border-radius: 16px;
-      box-shadow: 0 6px 12px rgba(38,77,64,0.12);
-      color: #1a3b33;
-      font-size: 1.3rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: default;
-      user-select: none;
-    }
-
-    .question-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 18px rgba(38,77,64,0.22);
-    }
-
-    /* Flip Cards Section */
-    .flip-section {
-      max-width: 900px;
-      display: flex;
-      justify-content: center;
-      gap: 48px;
-      margin: 48px auto 64px;
-      padding: 0 20px;
-      flex-wrap: wrap;
-    }
-
-    .flip-card {
-      width: 260px;
-      height: 180px;
-      perspective: 900px;
-      cursor: pointer;
-    }
-
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.6s cubic-bezier(0.36, 0.66, 0.04, 1);
-      transform-style: preserve-3d;
-      box-shadow: 0 10px 20px rgba(38,77,64,0.20);
-      border-radius: 18px;
-    }
-
-    .flip-card:hover .flip-card-inner,
-    .flip-card:focus-within .flip-card-inner {
-      transform: rotateY(180deg);
-    }
-
-    .flip-card-front,
-    .flip-card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 20px;
-      font-weight: 600;
-      font-size: 1.3rem;
-      color: #264d40;
-      box-sizing: border-box;
-    }
-
-    .flip-card-front {
-      background: #a8dadc;
-      color: #1b3a33;
-    }
-
-    .flip-card-back {
-      background: #70a899;
-      color: #e7f6f2;
-      transform: rotateY(180deg);
-      justify-content: space-around;
-    }
-
-    .flip-cta {
-      background: #1b3a33;
-      color: #f0faf8;
-      text-decoration: none;
-      padding: 12px 40px;
-      border-radius: 24px;
-      font-weight: 700;
-      font-size: 1rem;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
-      align-self: center;
-    }
-
-    .flip-cta:hover,
-    .flip-cta:focus {
-      background-color: #0f2623;
-      outline: none;
-    }
-
-    /* Footer */
-    footer {
-      background: #a8dadc;
-      padding: 28px 20px;
-      text-align: center;
-      color: #1b3a33;
-      font-weight: 600;
-      font-size: 1rem;
-      margin-top: auto;
-    }
-
-    footer .social-icons {
-      margin: 16px 0 8px;
-    }
-
-    footer .social-icons img {
-      width: 32px;
-      height: 32px;
-      margin: 0 12px;
-      filter: brightness(0) invert(0.6);
-      transition: filter 0.3s ease;
-      vertical-align: middle;
-      cursor: pointer;
-    }
-
-    footer .social-icons img:hover,
-    footer .social-icons img:focus {
-      filter: brightness(0) invert(1);
-      outline: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 820px) {
-      header {
-        flex-direction: column;
-        gap: 16px;
-      }
-      nav {
-        justify-content: center;
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-      .hero {
-        font-size: 1.8rem;
-        padding: 32px 12px;
-      }
-      .flip-section {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindfulSpace - Transform Your Mind, Transform Your Life</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Color Palette */
+            --color-primary: #4A9B8E;
+            --color-primary-hover: #3D8270;
+            --color-secondary: #F5F3F0;
+            --color-accent: #2C5F4F;
+            --color-text: #2C3E50;
+            --color-text-light: #6B7280;
+            --color-background: #FAFAFA;
+            --color-surface: #FFFFFF;
+            --color-border: rgba(44, 95, 79, 0.1);
+            
+            /* Typography */
+            --font-primary: 'Inter', sans-serif;
+            --font-secondary: 'Open Sans', sans-serif;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            --space-2xl: 4rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            
+            /* Transitions */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-secondary);
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 1000;
+            transition: var(--transition-normal);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) var(--space-md);
+        }
+        
+        .logo {
+            font-family: var(--font-primary);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: var(--space-lg);
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+            position: relative;
+            padding: var(--space-xs) 0;
+            cursor: pointer;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: var(--transition-normal);
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            color: var(--color-primary);
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: var(--space-xs);
+        }
+        
+        .hamburger-line {
+            width: 25px;
+            height: 3px;
+            background: var(--color-text);
+            margin: 3px 0;
+            transition: var(--transition-normal);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(74, 155, 142, 0.1) 0%, rgba(44, 95, 79, 0.1) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%234A9B8E;stop-opacity:0.1" /><stop offset="100%" style="stop-color:%232C5F4F;stop-opacity:0.2" /></linearGradient></defs><rect width="1000" height="600" fill="url(%23bg)" /><circle cx="200" cy="150" r="80" fill="%234A9B8E" opacity="0.1" /><circle cx="800" cy="400" r="120" fill="%232C5F4F" opacity="0.08" /><path d="M100,300 Q300,200 500,300 T900,300" stroke="%234A9B8E" stroke-width="2" fill="none" opacity="0.3" /></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 var(--space-md);
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero h1 {
+            font-family: var(--font-primary);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: var(--space-md);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--color-text-light);
+            margin-bottom: var(--space-xl);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-md) var(--space-xl);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            font-size: 1rem;
+            min-width: 180px;
+        }
+        
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--color-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Section Styles */
+        .section {
+            padding: var(--space-2xl) var(--space-md);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: var(--space-xl);
+            color: var(--color-text);
+        }
+        
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-light);
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Questions Section */
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .question-card {
+            background: var(--color-surface);
+            padding: var(--space-xl);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: var(--transition-normal);
+            cursor: default;
+            border: 1px solid var(--color-border);
+        }
+        
+        .question-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .question-card h3 {
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .question-card p {
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+        }
+        
+        /* Flip Cards */
+        .flip-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-xl);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .flip-card {
+            height: 300px;
+            perspective: 1000px;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .flip-card-front {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            color: white;
+        }
+        
+        .flip-card-back {
+            background: var(--color-surface);
+            color: var(--color-text);
+            transform: rotateY(180deg);
+            border: 2px solid var(--color-primary);
+        }
+        
+        .flip-card h3 {
+            font-family: var(--font-primary);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+        }
+        
+        .flip-card-back p {
+            margin-bottom: var(--space-lg);
+            line-height: 1.6;
+        }
+        
+        .flip-card .btn {
+            margin-top: auto;
+        }
+        
+        /* Services Preview */
+        .services-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .service-item {
+            background: var(--color-surface);
+            padding: var(--space-xl);
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            border: 1px solid var(--color-border);
+        }
+        
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--space-md);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .service-item h4 {
+            font-family: var(--font-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            color: var(--color-text);
+        }
+        
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-xl);
+        }
+        
+        .team-member {
+            background: var(--color-surface);
+            padding: var(--space-xl);
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            border: 1px solid var(--color-border);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto var(--space-md);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: 700;
+        }
+        
+        .member-name {
+            font-family: var(--font-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .member-role {
+            color: var(--color-primary);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+        }
+        
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2xl);
+            align-items: start;
+        }
+        
+        .contact-form {
+            background: var(--color-surface);
+            padding: var(--space-2xl);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-xs);
+            font-weight: 500;
+            color: var(--color-text);
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: var(--space-md);
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition-fast);
+            background: var(--color-background);
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .contact-info h3 {
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            margin-bottom: var(--space-md);
+            color: var(--color-primary);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            padding: var(--space-md);
+            background: var(--color-surface);
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: var(--space-md);
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--color-accent);
+            color: white;
+            text-align: center;
+            padding: var(--space-xl) var(--space-md);
+        }
+        
+        .footer p {
+            margin-bottom: var(--space-md);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition-normal);
+        }
+        
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: var(--space-md);
+                box-shadow: var(--shadow-md);
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .hero {
+                padding-top: 100px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: var(--space-xl) var(--space-md);
+            }
+        }
+        
+        /* Hidden sections */
+        .section.hidden {
+            display: none;
+        }
+        
+        /* Smooth transitions for section switching */
+        .section {
+            opacity: 1;
+            transition: opacity var(--transition-normal);
+        }
+        
+        .section.fade-out {
+            opacity: 0;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo" tabindex="0">MindfulSpace</div>
-    <nav>
-      <a href="#" tabindex="0">Home</a>
-      <a href="#" tabindex="0">For Individuals</a>
-      <a href="#" tabindex="0">For Organizations</a>
-      <a href="#" tabindex="0">Partner With Us</a>
-      <a href="#" tabindex="0">Contact</a>
-    </nav>
-  </header>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">MindfulSpace</a>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active" data-section="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-section="individuals">For Individuals</a></li>
+                <li><a href="#" class="nav-link" data-section="organizations">For Organizations</a></li>
+                <li><a href="#" class="nav-link" data-section="resorts">For Resorts</a></li>
+                <li><a href="#" class="nav-link" data-section="about">About</a></li>
+                <li><a href="#" class="nav-link" data-section="contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-toggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </div>
+        </nav>
+    </header>
 
-  <section class="hero" role="img" aria-label="Serene nature scene representing calm and mindfulness">
-    Embrace Mindfulness
-  </section>
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <!-- Hero -->
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Embrace Mindfulness, Transform Your Life</h1>
+                    <p>Professional wellness services designed for individuals, teams, and hospitality partners</p>
+                    <div class="cta-buttons">
+                        <a href="#" class="btn btn-primary" data-section="individuals">Start Your Journey</a>
+                        <a href="#" class="btn btn-secondary" data-section="resorts">Explore Partnerships</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questions Section -->
+            <div class="section">
+                <h2 class="section-title">Transform Your Perspective</h2>
+                <div class="questions-grid">
+                    <div class="question-card">
+                        <h3>🧘‍♀️</h3>
+                        <p>What does inner peace mean to you?</p>
+                    </div>
+                    <div class="question-card">
+                        <h3>✨</h3>
+                        <p>How can mindfulness transform your daily routine?</p>
+                    </div>
+                    <div class="question-card">
+                        <h3>🏢</h3>
+                        <p>Ready to create a calmer workspace?</p>
+                    </div>
+                    <div class="question-card">
+                        <h3>🌱</h3>
+                        <p>What if stress became your teacher?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Flip Cards -->
+            <div class="section">
+                <h2 class="section-title">Choose Your Path</h2>
+                <div class="flip-cards-container">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>👤<br>For Individuals</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Personal Growth</h3>
+                                <p>Personal wellness programs, meditation training, and life coaching designed for your unique journey</p>
+                                <a href="#" class="btn btn-primary" data-section="individuals">Begin Today</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>🏢<br>For Organizations</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Team Transformation</h3>
+                                <p>Corporate wellness programs that reduce stress, improve focus, and enhance team performance</p>
+                                <a href="#" class="btn btn-primary" data-section="organizations">Transform Your Team</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>🏨<br>For Resorts</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Guest Experiences</h3>
+                                <p>Partnership programs to offer authentic wellness experiences that delight your guests</p>
+                                <a href="#" class="btn btn-primary" data-section="resorts">Partner With Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Services Preview -->
+            <div class="section">
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-subtitle">Comprehensive wellness solutions tailored to your needs</p>
+                <div class="services-preview">
+                    <div class="service-item">
+                        <div class="service-icon">🧘</div>
+                        <h4>Meditation Training</h4>
+                        <p>Personalized meditation sessions and mindfulness practices</p>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">💼</div>
+                        <h4>Corporate Wellness</h4>
+                        <p>Team workshops and workplace stress reduction programs</p>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">🌿</div>
+                        <h4>Stress Management</h4>
+                        <p>Comprehensive programs for lasting stress relief</p>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">🎯</div>
+                        <h4>Leadership Coaching</h4>
+                        <p>Mindful leadership development for executives</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <section class="questions" aria-label="Mindfulness inviting questions">
-    <div class="question-card" tabindex="0">What does calm mean to you?</div>
-    <div class="question-card" tabindex="0">How can you bring mindfulness into your day?</div>
-    <div class="question-card" tabindex="0">Ready to transform your space?</div>
-  </section>
+        <!-- For Individuals Section -->
+        <section id="individuals" class="section hidden">
+            <h2 class="section-title">Individual Wellness Programs</h2>
+            <p class="section-subtitle">Personalized mindfulness journeys designed for your unique path to well-being</p>
+            
+            <div class="services-preview">
+                <div class="service-item">
+                    <div class="service-icon">🧘‍♀️</div>
+                    <h4>Personal Meditation Training</h4>
+                    <p>One-on-one sessions tailored to your lifestyle and goals</p>
+                    <strong>Starting at $75/session</strong>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🌱</div>
+                    <h4>Stress Management Program</h4>
+                    <p>8-week comprehensive program for lasting stress relief</p>
+                    <strong>$450 complete program</strong>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">✨</div>
+                    <h4>Mindful Living Coaching</h4>
+                    <p>Life coaching with mindfulness at the core</p>
+                    <strong>$120/session</strong>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#" class="btn btn-primary" data-section="contact">Book Your First Session</a>
+            </div>
+        </section>
 
-  <section class="flip-section" aria-label="Flip cards for users and partners">
-    <div class="flip-card" tabindex="0">
-      <div class="flip-card-inner">
-        <div class="flip-card-front" aria-hidden="false">For Individuals</div>
-        <div class="flip-card-back" aria-hidden="true">
-          Your journey to well-being starts here!
-          <a href="individuals.html" class="flip-cta" tabindex="0">Start Now</a>
+        <!-- For Organizations Section -->
+        <section id="organizations" class="section hidden">
+            <h2 class="section-title">Corporate Wellness Solutions</h2>
+            <p class="section-subtitle">Transform your workplace culture with comprehensive mindfulness programs</p>
+            
+            <div class="services-preview">
+                <div class="service-item">
+                    <div class="service-icon">👥</div>
+                    <h4>Corporate Wellness Workshops</h4>
+                    <p>Interactive workshops for teams of any size</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Stress reduction techniques</li>
+                        <li>Mindful communication</li>
+                        <li>Focus enhancement</li>
+                    </ul>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">👔</div>
+                    <h4>Leadership Mindfulness Training</h4>
+                    <p>Executive coaching incorporating mindfulness principles</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Emotional intelligence</li>
+                        <li>Decision clarity</li>
+                        <li>Resilient leadership</li>
+                    </ul>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🏢</div>
+                    <h4>Workplace Meditation Programs</h4>
+                    <p>Regular meditation sessions for your office</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Guided sessions</li>
+                        <li>Meditation spaces design</li>
+                        <li>Progress tracking</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#" class="btn btn-primary" data-section="contact">Schedule a Consultation</a>
+            </div>
+        </section>
+
+        <!-- For Resorts Section -->
+        <section id="resorts" class="section hidden">
+            <h2 class="section-title">Resort Partnership Programs</h2>
+            <p class="section-subtitle">Enhance your guest experience with authentic wellness offerings</p>
+            
+            <div class="services-preview">
+                <div class="service-item">
+                    <div class="service-icon">🌅</div>
+                    <h4>Guest Wellness Programs</h4>
+                    <p>Curated mindfulness experiences for your guests</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Morning meditation sessions</li>
+                        <li>Wellness workshops</li>
+                        <li>Mindful dining experiences</li>
+                    </ul>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">👨‍🏫</div>
+                    <h4>Staff Training Programs</h4>
+                    <p>Train your team to deliver authentic wellness experiences</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Staff wellness training</li>
+                        <li>Guest interaction skills</li>
+                        <li>Mindfulness practices</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#" class="btn btn-primary" data-section="contact">Explore Partnership</a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section hidden">
+            <h2 class="section-title">Meet Our Team</h2>
+            <p class="section-subtitle">Experienced professionals dedicated to your wellness journey</p>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">SC</div>
+                    <h3 class="member-name">Sarah Chen</h3>
+                    <p class="member-role">Founder &amp; Lead Mindfulness Coach</p>
+                    <p>20+ years in mindfulness practice with certifications from leading institutions</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">MR</div>
+                    <h3 class="member-name">Michael Rodriguez</h3>
+                    <p class="member-role">Corporate Wellness Director</p>
+                    <p>Former Fortune 500 executive turned wellness expert</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">AP</div>
+                    <h3 class="member-name">Dr. Anita Patel</h3>
+                    <p class="member-role">Stress Management Specialist</p>
+                    <p>PhD in Psychology with focus on mindfulness-based interventions</p>
+                </div>
+            </div>
+            
+            <!-- Testimonials -->
+            <div class="section">
+                <h3 style="text-align: center; margin-bottom: 2rem; font-size: 2rem; color: var(--color-primary);">What Our Clients Say</h3>
+                <div class="services-preview">
+                    <div class="service-item">
+                        <div class="service-icon">💬</div>
+                        <p style="font-style: italic; margin-bottom: 1rem;">"The corporate program transformed our workplace culture completely"</p>
+                        <strong>- Jennifer Kim, HR Director, TechCorp</strong>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">💬</div>
+                        <p style="font-style: italic; margin-bottom: 1rem;">"Personal coaching sessions helped me find balance I never thought possible"</p>
+                        <strong>- Robert Johnson, Executive</strong>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">💬</div>
+                        <p style="font-style: italic; margin-bottom: 1rem;">"Our guests absolutely love the mindfulness programs - booking rates increased 30%"</p>
+                        <strong>- Maria Santos, Resort Manager</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section hidden">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">Ready to begin your mindfulness journey? We're here to help.</p>
+            
+            <div class="contact-container">
+                <div class="contact-form">
+                    <h3>Send us a message</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service" class="form-label">Service Interest</label>
+                            <select id="service" class="form-input">
+                                <option value="">Select a service</option>
+                                <option value="individual">Individual Coaching</option>
+                                <option value="corporate">Corporate Wellness</option>
+                                <option value="resort">Resort Partnership</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea id="message" class="form-textarea" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <strong>Phone</strong><br>
+                            +1 (555) 123-CALM
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div>
+                            <strong>Email</strong><br>
+                            hello@mindfulspace.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <strong>Address</strong><br>
+                            123 Serenity Lane<br>
+                            Wellness District, CA 90210
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🕒</div>
+                        <div>
+                            <strong>Hours</strong><br>
+                            Mon-Fri: 8AM-7PM<br>
+                            Saturday: 9AM-5PM
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 MindfulSpace. Transform Your Mind, Transform Your Life.</p>
+        <div class="social-links">
+            <a href="#" class="social-link">📘</a>
+            <a href="#" class="social-link">📷</a>
+            <a href="#" class="social-link">💼</a>
         </div>
-      </div>
-    </div>
+    </footer>
 
-    <div class="flip-card" tabindex="0">
-      <div class="flip-card-inner">
-        <div class="flip-card-front" aria-hidden="false">For Partners</div>
-        <div class="flip-card-back" aria-hidden="true">
-          Explore collaboration and resort programs.
-          <a href="resorts.html" class="flip-cta" tabindex="0">Partner Up</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="social-icons" aria-label="Social media links">
-      <a href="#" tabindex="0" aria-label="Instagram">
-        <img src="https://cdn.simpleicons.org/instagram/264d40" alt="Instagram icon" />
-      </a>
-      <a href="#" tabindex="0" aria-label="Facebook">
-        <img src="https://cdn.simpleicons.org/facebook/264d40" alt="Facebook icon" />
-      </a>
-      <a href="#" tabindex="0" aria-label="LinkedIn">
-        <img src="https://cdn.simpleicons.org/linkedin/264d40" alt="LinkedIn icon" />
-      </a>
-    </div>
-    © 2025 MindfulSpace. All rights reserved.
-  </footer>
+    <script>
+        // Navigation and Section Management
+        class MindfulSpaceApp {
+            constructor() {
+                this.currentSection = 'home';
+                this.init();
+            }
+            
+            init() {
+                this.setupNavigation();
+                this.setupMobileMenu();
+                this.setupContactForm();
+                this.setupScrollEffects();
+            }
+            
+            setupNavigation() {
+                // Get all navigation links
+                const navLinks = document.querySelectorAll('.nav-link, [data-section]');
+                
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const sectionId = link.getAttribute('data-section');
+                        if (sectionId) {
+                            this.navigateToSection(sectionId);
+                        }
+                    });
+                });
+            }
+            
+            navigateToSection(sectionId) {
+                // Hide current section
+                const currentSectionEl = document.getElementById(this.currentSection);
+                if (currentSectionEl) {
+                    currentSectionEl.classList.add('hidden');
+                }
+                
+                // Show new section
+                const newSectionEl = document.getElementById(sectionId);
+                if (newSectionEl) {
+                    newSectionEl.classList.remove('hidden');
+                    newSectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                // Update current section
+                this.currentSection = sectionId;
+                
+                // Update active nav link
+                this.updateActiveNavLink(sectionId);
+                
+                // Close mobile menu if open
+                this.closeMobileMenu();
+            }
+            
+            updateActiveNavLink(sectionId) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-section') === sectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            setupMobileMenu() {
+                const toggle = document.querySelector('.mobile-menu-toggle');
+                const menu = document.querySelector('.nav-menu');
+                
+                if (toggle && menu) {
+                    toggle.addEventListener('click', () => {
+                        menu.classList.toggle('active');
+                        this.toggleHamburger();
+                    });
+                }
+            }
+            
+            toggleHamburger() {
+                const lines = document.querySelectorAll('.hamburger-line');
+                lines.forEach((line, index) => {
+                    if (index === 0) {
+                        line.style.transform = line.style.transform ? '' : 'rotate(45deg) translate(5px, 5px)';
+                    } else if (index === 1) {
+                        line.style.opacity = line.style.opacity === '0' ? '1' : '0';
+                    } else if (index === 2) {
+                        line.style.transform = line.style.transform ? '' : 'rotate(-45deg) translate(7px, -6px)';
+                    }
+                });
+            }
+            
+            closeMobileMenu() {
+                const menu = document.querySelector('.nav-menu');
+                if (menu && menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                    this.toggleHamburger();
+                }
+            }
+            
+            setupContactForm() {
+                const form = document.getElementById('contactForm');
+                if (form) {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleFormSubmit(form);
+                    });
+                }
+            }
+            
+            handleFormSubmit(form) {
+                // Get form data
+                const formData = new FormData(form);
+                const data = {
+                    name: formData.get('name') || document.getElementById('name').value,
+                    email: formData.get('email') || document.getElementById('email').value,
+                    service: document.getElementById('service').value,
+                    message: formData.get('message') || document.getElementById('message').value
+                };
+                
+                // Simple validation
+                if (!data.name || !data.email || !data.message) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                // Show success message
+                alert(`Thank you, ${data.name}! Your message has been received. We'll get back to you soon.`);
+                
+                // Reset form
+                form.reset();
+            }
+            
+            setupScrollEffects() {
+                // Add scroll effects for animations
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('fade-in-up');
+                            }
+                        });
+                    },
+                    { threshold: 0.1 }
+                );
+                
+                // Observe elements for animation
+                document.querySelectorAll('.question-card, .flip-card, .service-item, .team-member').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+        }
+        
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new MindfulSpaceApp();
+        });
+        
+        // Header background effect on scroll
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    </script>
 </body>
 </html>
+            
