@@ -1,127 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mindfulness for Individuals - Mindful Center</title>
-    <style>
-        /* CSS styles for header, hero, flip cards, testimonials, footer, etc. */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
-        }
-        /* Additional detailed CSS omitted here for brevity */
-        /* Flip card styles with hover flip effect */
-        .flip-card {
-            width: 100%;
-            height: 300px;
-            perspective: 1000px;
-        }
-        .flip-card-inner {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        /* Front and back faces styling */
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-        .flip-card-front {
-            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
-            color: white;
-        }
-        .flip-card-back {
-            background: white;
-            color: #333;
-            transform: rotateY(180deg);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For Individuals - MindfulSpace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #ffffff;
+      color: #264d40;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #a8dadc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1b3a33;
+      letter-spacing: 2px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+      font-size: 1.1rem;
+    }
+
+    nav a {
+      color: #1b3a33;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 8px 16px;
+      border-radius: 12px;
+    }
+
+    nav a:hover, nav a:focus {
+      background: #457b74;
+      color: #f0faf8;
+      outline: none;
+    }
+
+    nav a.active {
+      background: #264d40;
+      color: #f0faf8;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 48px auto 64px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #4a9b8e, #2c5f4f);
+      color: #f0faf8;
+      border-radius: 20px;
+      margin-bottom: 64px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .hero h1 {
+      font-size: 2.75rem;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      max-width: 650px;
+      margin: 0 auto;
+      font-weight: 600;
+    }
+
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      color: #1b3a33;
+      margin: 64px 0 32px;
+      border-bottom: 3px solid #f472b6;
+      padding-bottom: 12px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-bottom: 64px;
+    }
+
+    .service-card {
+      background: #f0f4f8;
+      padding: 32px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(38,77,64,0.1);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(38,77,64,0.18);
+    }
+
+    .service-card h3 {
+      color: #264d40;
+      margin-bottom: 16px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .service-card p {
+      margin-bottom: 24px;
+      font-size: 1.1rem;
+    }
+
+    .price {
+      font-weight: 700;
+      color: #f472b6;
+      font-size: 1.2rem;
+      margin-bottom: 24px;
+    }
+
+    .features {
+      list-style: none;
+      margin-bottom: 32px;
+      font-size: 1rem;
+      color: #3b5a50;
+    }
+
+    .features li {
+      padding: 6px 0;
+      position: relative;
+      padding-left: 24px;
+      font-weight: 600;
+    }
+
+    .features li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #f472b6;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #f472b6;
+      color: #ffffff;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    .btn-primary:hover {
+      background: #ec4899;
+    }
+
+    .testimonials {
+      background: #f0f4f8;
+      padding: 40px 32px;
+      border-radius: 20px;
+      margin: 64px 0;
+      font-style: italic;
+      font-family: 'Open Sans', sans-serif;
+      color: #3b5a50;
+    }
+
+    .testimonial {
+      margin-bottom: 28px;
+      font-size: 1.1rem;
+    }
+
+    .testimonial cite {
+      display: block;
+      margin-top: 10px;
+      font-weight: 700;
+      color: #264d40;
+      font-style: normal;
+      font-size: 1rem;
+    }
+
+    footer {
+      background: #a8dadc;
+      padding: 36px 20px;
+      text-align: center;
+      color: #1b3a33;
+      font-weight: 600;
+      margin-top: auto;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .social-icons {
+      margin: 20px 0 12px;
+    }
+
+    .social-icons img {
+      width: 36px;
+      height: 36px;
+      margin: 0 14px;
+      filter: brightness(0) invert(0.6);
+      transition: filter 0.3s ease;
+      cursor: pointer;
+    }
+
+    .social-icons img:hover {
+      filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 20px;
+      }
+      nav {
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      main {
+        margin: 24px 16px 64px;
+      }
+      .services-grid {
+        gap: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
-<header>
+  <header>
+    <a href="index.html" class="logo">MindfulSpace</a>
     <nav>
-        <div class="logo">Mindful Center</div>
-        <ul class="nav-menu">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#programs">Programs</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+      <a href="index.html">Home</a>
+      <a href="individuals.html" class="active">For Individuals</a>
+      <a href="organizations.html">For Organizations</a>
+      <a href="resorts.html">For Resorts</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
     </nav>
-</header>
+  </header>
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>Mindfulness for Individuals</h1>
-        <p>Personal Growth, Stress Relief, and Wellness Through Mindfulness</p>
-        <a href="#programs" class="cta-button">Begin Your Journey</a>
-    </div>
-</section>
-
-<main class="main-content">
-    <div class="intro-text">
-        <p>Discover the transformative power of mindfulness tailored specifically for your personal journey...</p>
+  <main>
+    <div class="hero">
+      <h1>Personal Mindfulness & Wellness Journey</h1>
+      <p>Discover inner peace and transform your life with personalized mindfulness practices, expert guidance, and proven techniques for stress reduction and mental clarity.</p>
     </div>
 
-    <div class="cards-container">
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <div class="card-icon">🌱</div>
-                    <div class="card-title">Beginners Welcome</div>
-                    <div class="card-description">Perfect for those new to mindfulness</div>
-                </div>
-                <div class="flip-card-back">Start your mindfulness journey with our beginner-friendly sessions. No experience needed...</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <div class="card-icon">🎯</div>
-                    <div class="card-title">Individual Programs</div>
-                    <div class="card-description">Customized programs for your needs</div>
-                </div>
-                <div class="flip-card-back">Personalized meditation courses, stress management workshops, and more...</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <div class="card-icon">🤝</div>
-                    <div class="card-title">Personal Coaching</div>
-                    <div class="card-description">One-on-one guidance and support</div>
-                </div>
-                <div class="flip-card-back">One-on-one guidance from certified mindfulness instructors tailored for you...</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <div class="card-icon">📚</div>
-                    <div class="card-title">Resources & Tools</div>
-                    <div class="card-description">Everything you need to practice</div>
-                </div>
-                <div class="flip-card-back">Access guided meditations, exercises, readings, and daily practice tips...</div>
-            </div>
-        </div>
+    <h2>Our Individual Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Individual Meditation Coaching</h3>
+        <p>One-on-one personalized meditation sessions with certified instructors tailored to your specific needs and goals.</p>
+        <div class="price">Starting at $75 per session</div>
+        <ul class="features">
+          <li>Personalized meditation plans</li>
+          <li>Flexible scheduling options</li>
+          <li>Progress tracking and guidance</li>
+          <li>Homework assignments and practices</li>
+        </ul>
+        <a href="contact.html" class="btn-primary">Book Session</a>
+      </div>
+
+      <div class="service-card">
+        <h3>Mindfulness Course Packages</h3>
+        <p>Comprehensive 8-week structured programs covering stress reduction, emotional regulation, and mindful living practices.</p>
+        <div class="price">$299 for 8-week program</div>
+        <ul class="features">
+          <li>Weekly group sessions</li>
+          <li>Take-home materials</li>
+          <li>Community support network</li>
+          <li>Lifetime resource access</li>
+        </ul>
+        <a href="contact.html" class="btn-primary">Enroll Now</a>
+      </div>
+
+      <div class="service-card">
+        <h3>Self-Paced Digital Programs</h3>
+        <p>Access our library of guided meditations, mindfulness exercises, and wellness content anytime, anywhere through our mobile app.</p>
+        <div class="price">$19.99 per month</div>
+        <ul class="features">
+          <li>200+ guided meditations</li>
+          <li>Daily mindfulness reminders</li>
+          <li>Progress tracking tools</li>
+          <li>Offline content access</li>
+        </ul>
+        <a href="contact.html" class="btn-primary">Start Free Trial</a>
+      </div>
     </div>
-</main>
 
-<!-- Further sections for testimonials and footer omitted for brevity -->
+    <div class="testimonials">
+      <h2>What Our Clients Say</h2>
+      <div class="testimonial">
+        <p>"The individual coaching sessions completely changed my relationship with stress. I feel more centered and confident in daily life."</p>
+        <cite>- Sarah M., Marketing Professional</cite>
+      </div>
+      <div class="testimonial">
+        <p>"The 8-week program gave me tools I use every single day. My sleep improved and anxiety decreased significantly."</p>
+        <cite>- David L., College Student</cite>
+      </div>
+    </div>
+  </main>
 
+  <footer>
+    <div class="social-icons">
+      <img src="https://cdn.simpleicons.org/instagram/264d40" alt="Instagram" />
+      <img src="https://cdn.simpleicons.org/facebook/264d40" alt="Facebook" />
+      <img src="https://cdn.simpleicons.org/linkedin/264d40" alt="LinkedIn" />
+    </div>
+    © 2025 MindfulSpace. All rights reserved.
+  </footer>
 </body>
 </html>
