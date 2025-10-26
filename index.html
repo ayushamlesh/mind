@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atmaniti - Where Ancient Wisdom Meets Modern Transformation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="on-landing">
+    <!-- Loading Screen -->
+    <div id="loader" class="loader">
+        <div class="lotus-animation"> <img src="logo.jpg" alt="logo" width="100" height="100"></div>
+<!--  <div class="lotus-animation">🪷</div>-->
+        <p>Loading your journey...</p>
+    </div>
+
+    <!-- Navigation (HIDDEN INITIALLY) -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="navigateTo('home')">
+                <span class="lotus-icon">🪷</span>
+                <span class="logo-text">Atmaniti</span>
+            </div>
+
+            <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" onclick="navigateTo('home')">Home</a></li>
+                <li><a href="#" onclick="navigateTo('individuals')">For Individuals</a></li>
+                <li><a href="#" onclick="navigateTo('organizations')">For Organizations</a></li>
+                <li><a href="#" onclick="navigateTo('retreats')">Retreats</a></li>
+                <li><a href="#" onclick="navigateTo('about')">About</a></li>
+                <li><a href="#" onclick="navigateTo('contact')">Contact</a></li>
+                <li class="auth-links" id="authLinks">
+                    <a href="#" onclick="navigateTo('login')" class="btn-outline">Login</a>
+                    <a href="#" onclick="navigateTo('register')" class="btn-primary">Register</a>
+                </li>
+                <li class="user-section hidden" id="userSection">
+                    <span class="user-name" id="userName">User</span>
+                    <a href="#" onclick="navigateTo('dashboard')" class="btn-outline">Dashboard</a>
+                    <a href="#" onclick="logout()" class="btn-secondary">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="mainContent">
+        <!-- LANDING PAGE - FULL SCREEN, NO MENU, NO SCROLL -->
+        <section id="landingPage" class="page-section active">
+            <div class="landing-hero">
+                <div class="landing-content">
+                    <div class="logo-large fade-in">
+                        <span class="lotus-large">🪷</span>
+                       
+                        <h1 class="brand-name">Atmaniti</h1>
+                    </div>
+                     <!--<p class="vision-statement fade-in-delay">Where Ancient Wisdom Meets Modern Transformation</p>-->
+                    <p class="mission-statement fade-in-delay-2">
+                        Embark on a journey of conscious leadership and holistic wellness. 
+                        We combine 5000 years of Indian wisdom with modern science to create 
+                        transformative experiences that awaken your highest potential.
+                    </p>
+                    <button class="cta-button pulse" onclick="revealNavAndNavigate('home')">
+                        Begin Your Journey
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOME PAGE -->
+        <section id="homePage" class="page-section">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h2 class="section-title">Transform Your Life</h2>
+                    <p class="section-subtitle">Discover the path to conscious leadership and holistic wellness</p>
+                </div>
+            </div>
+
+            <!-- Core Pillars -->
+            <div class="pillars-container">
+                <div class="pillar-card" onclick="navigateTo('organizations')">
+                    <div class="pillar-icon">🧘‍♂️</div>
+                    <h3>Conscious Leadership</h3>
+                    <p>Awaken the leader within through mindful practices and strategic wisdom</p>
+                    <button class="learn-more-btn">Learn More →</button>
+                </div>
+
+                <div class="pillar-card" onclick="navigateTo('individuals')">
+                    <div class="pillar-icon">🌿</div>
+                    <h3>Holistic Wellness</h3>
+                    <p>Ancient healing traditions merged with modern science for complete wellbeing</p>
+                    <button class="learn-more-btn">Learn More →</button>
+                </div>
+
+                <div class="pillar-card" onclick="navigateTo('retreats')">
+                    <div class="pillar-icon">🪷</div>
+                    <h3>Transformative Retreats</h3>
+                    <p>Immersive experiences in serene settings designed for profound personal growth</p>
+                    <button class="learn-more-btn">Learn More →</button>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="testimonials-section">
+                <h2 class="section-title">Transformative Experiences</h2>
+                <div class="testimonial-carousel">
+                    <div class="testimonial-slide active">
+                        <p class="testimonial-quote">"Atmaniti's leadership retreat transformed not just my approach to business, but my entire life perspective"</p>
+                        <p class="testimonial-author">- Priya Sharma, CEO, Tech Startup</p>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="testimonial-quote">"The perfect blend of strategic thinking and spiritual growth. Truly transformative"</p>
+                        <p class="testimonial-author">- Rajesh Kumar, Corporate Executive</p>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="testimonial-quote">"Found myself again through the ancient wisdom practices. The facilitators are exceptional"</p>
+                        <p class="testimonial-author">- Maya Patel, Wellness Seeker</p>
+                    </div>
+                </div>
+                <div class="testimonial-dots">
+                    <span class="dot active" onclick="showTestimonial(0)"></span>
+                    <span class="dot" onclick="showTestimonial(1)"></span>
+                    <span class="dot" onclick="showTestimonial(2)"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOR INDIVIDUALS PAGE -->
+        <section id="individualsPage" class="page-section">
+            <div class="page-hero">
+                <h2>For Individuals</h2>
+                <p>Embark on a personal journey of self-mastery and conscious awakening</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="service-icon">🧘</div>
+                            <h3>Mindfulness Mastery</h3>
+                            <p class="service-tagline">Cultivate inner peace and clarity</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Mindfulness Mastery</h3>
+                            <p>Personal meditation training, breathwork sessions, and mindfulness practices tailored to your journey.</p>
+                            <p class="price">₹15,000 | 3 sessions</p>
+                            <button class="cta-button" onclick="bookService('Mindfulness Mastery')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="service-icon">🌿</div>
+                            <h3>Self-Discovery Retreats</h3>
+                            <p class="service-tagline">Reconnect with your authentic self</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Self-Discovery Retreats</h3>
+                            <p>Multi-day immersive experiences combining yoga, nature therapy, and guided self-reflection.</p>
+                            <p class="price">₹35,000 | 5 days</p>
+                            <button class="cta-button" onclick="bookService('Self-Discovery Retreat')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="service-icon">🪷</div>
+                            <h3>Ancient Wisdom Practices</h3>
+                            <p class="service-tagline">Learn timeless healing traditions</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Ancient Wisdom Practices</h3>
+                            <p>Ayurveda consultations, energy healing, and traditional Indian wellness philosophies.</p>
+                            <p class="price">₹25,000 | 7 sessions</p>
+                            <button class="cta-button" onclick="bookService('Ancient Wisdom')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Tiers -->
+            <div class="pricing-section">
+                <h2 class="section-title">Choose Your Path</h2>
+                <div class="pricing-cards">
+                    <div class="price-card">
+                        <h3>Basic</h3>
+                        <p class="price-amount">₹25,000</p>
+                        <ul class="features-list">
+                            <li>✓ 3 Sessions</li>
+                            <li>✓ Email Support</li>
+                            <li>✓ Basic Materials</li>
+                            <li>✓ Group Sessions</li>
+                        </ul>
+                        <button class="cta-button outline" onclick="selectPlan('Basic')">Select Plan</button>
+                    </div>
+
+                    <div class="price-card featured">
+                        <div class="badge">Popular</div>
+                        <h3>Premium</h3>
+                        <p class="price-amount">₹45,000</p>
+                        <ul class="features-list">
+                            <li>✓ 7 Sessions</li>
+                            <li>✓ Priority Support</li>
+                            <li>✓ Comprehensive Materials</li>
+                            <li>✓ 1-on-1 Sessions</li>
+                            <li>✓ Follow-up Call</li>
+                        </ul>
+                        <button class="cta-button" onclick="selectPlan('Premium')">Select Plan</button>
+                    </div>
+
+                    <div class="price-card">
+                        <h3>Elite</h3>
+                        <p class="price-amount">₹75,000</p>
+                        <ul class="features-list">
+                            <li>✓ Unlimited Sessions</li>
+                            <li>✓ 24/7 Support</li>
+                            <li>✓ Premium Materials</li>
+                            <li>✓ Private Sessions</li>
+                            <li>✓ Lifetime Access</li>
+                            <li>✓ Retreat Discount</li>
+                        </ul>
+                        <button class="cta-button outline" onclick="selectPlan('Elite')">Select Plan</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOR ORGANIZATIONS PAGE -->
+        <section id="organizationsPage" class="page-section">
+            <div class="page-hero">
+                <h2>For Organizations</h2>
+                <p>Transform your team through conscious leadership and strategic wellness programs</p>
+            </div>
+
+            <div class="org-services-grid">
+                <div class="org-card">
+                    <div class="org-icon">👔</div>
+                    <h3>Leadership Retreats</h3>
+                    <p>3-7 day programs for C-suite executives and senior leadership teams focusing on conscious leadership and strategic thinking.</p>
+                    <button class="learn-more-btn" onclick="showOrgDetails('Leadership Retreats')">Learn More →</button>
+                </div>
+
+                <div class="org-card">
+                    <div class="org-icon">🤝</div>
+                    <h3>Team Building Programs</h3>
+                    <p>Collaborative wellness experiences that strengthen team bonds and improve communication through mindful activities.</p>
+                    <button class="learn-more-btn" onclick="showOrgDetails('Team Building')">Learn More →</button>
+                </div>
+
+                <div class="org-card">
+                    <div class="org-icon">💼</div>
+                    <h3>Executive Coaching</h3>
+                    <p>One-on-one conscious leadership coaching with measurable outcomes. Transform your leadership style with personalized guidance.</p>
+                    <button class="learn-more-btn" onclick="showOrgDetails('Executive Coaching')">Learn More →</button>
+                </div>
+
+                <div class="org-card">
+                    <div class="org-icon">📊</div>
+                    <h3>Wellness Workshops</h3>
+                    <p>Half-day to full-day workshops on stress management, mindfulness, and peak performance for corporate teams.</p>
+                    <button class="learn-more-btn" onclick="showOrgDetails('Wellness Workshops')">Learn More →</button>
+                </div>
+            </div>
+
+            <div class="consultation-cta">
+                <h2>Ready to Transform Your Organization?</h2>
+                <p>Schedule a free consultation to discuss your team's needs</p>
+                <button class="cta-button large" onclick="navigateTo('contact')">Schedule Consultation</button>
+            </div>
+        </section>
+
+        <!-- RETREATS PAGE -->
+        <section id="retreatsPage" class="page-section">
+            <div class="page-hero">
+                <h2>Our Retreats</h2>
+                <p>Immersive experiences designed for transformation</p>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterRetreats('all')">All</button>
+                <button class="filter-btn" onclick="filterRetreats('wellness')">Wellness</button>
+                <button class="filter-btn" onclick="filterRetreats('leadership')">Leadership</button>
+                <button class="filter-btn" onclick="filterRetreats('meditation')">Meditation</button>
+            </div>
+
+            <div class="retreats-grid" id="retreatsGrid">
+                <div class="retreat-card" data-type="wellness">
+                    <div class="retreat-image gradient-1"></div>
+                    <div class="retreat-content">
+                        <h3>Himalayan Awakening</h3>
+                        <div class="retreat-meta">
+                            <span>📍 Rishikesh</span>
+                            <span>⏱️ 7 Days</span>
+                            <span>💰 ₹45,000</span>
+                        </div>
+                        <p class="retreat-tagline">Transform in the foothills of the Himalayas</p>
+                        <button class="cta-button" onclick="showRetreatDetails(1)">View Details</button>
+                    </div>
+                </div>
+
+                <div class="retreat-card" data-type="leadership">
+                    <div class="retreat-image gradient-2"></div>
+                    <div class="retreat-content">
+                        <h3>Executive Mastery Retreat</h3>
+                        <div class="retreat-meta">
+                            <span>📍 Kerala</span>
+                            <span>⏱️ 5 Days</span>
+                            <span>💰 ₹65,000</span>
+                        </div>
+                        <p class="retreat-tagline">Strategic thinking meets self-mastery</p>
+                        <button class="cta-button" onclick="showRetreatDetails(2)">View Details</button>
+                    </div>
+                </div>
+
+                <div class="retreat-card" data-type="meditation">
+                    <div class="retreat-image gradient-3"></div>
+                    <div class="retreat-content">
+                        <h3>Sacred Silence</h3>
+                        <div class="retreat-meta">
+                            <span>📍 Goa</span>
+                            <span>⏱️ 3 Days</span>
+                            <span>💰 ₹28,000</span>
+                        </div>
+                        <p class="retreat-tagline">Deep meditation and inner exploration</p>
+                        <button class="cta-button" onclick="showRetreatDetails(3)">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT PAGE -->
+        <section id="aboutPage" class="page-section">
+            <div class="page-hero">
+                <h2>About Atmaniti</h2>
+                <p>Our journey towards conscious transformation</p>
+            </div>
+
+            <div class="about-content">
+                <div class="mission-box">
+                    <h3>Our Mission</h3>
+                    <p>To be a leading platform for conscious leadership and wellness in India, combining ancient wisdom with holistic wellness practices to create transformative experiences.</p>
+                </div>
+
+                <div class="philosophy-grid">
+                    <div class="philosophy-card">
+                        <div class="phil-icon">📿</div>
+                        <h3>Ancient Wisdom</h3>
+                        <p>Drawing from 5000 years of Indian spiritual and healing traditions</p>
+                    </div>
+
+                    <div class="philosophy-card">
+                        <div class="phil-icon">🔬</div>
+                        <h3>Modern Science</h3>
+                        <p>Evidence-based wellness practices backed by neuroscience and psychology</p>
+                    </div>
+
+                    <div class="philosophy-card">
+                        <div class="phil-icon">✨</div>
+                        <h3>Transformative Experience</h3>
+                        <p>Immersive programs designed for lasting personal and professional growth</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT PAGE -->
+        <section id="contactPage" class="page-section">
+            <div class="page-hero">
+                <h2>Get in Touch</h2>
+                <p>Let's begin your transformation journey</p>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" onsubmit="handleContactSubmit(event)">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" required placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" required placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" placeholder="+91 98765 43210">
+                        </div>
+                        <div class="form-group">
+                            <label>Interest</label>
+                            <select required>
+                                <option value="">Select your interest</option>
+                                <option value="individual">Individual Programs</option>
+                                <option value="organization">Organization Programs</option>
+                                <option value="retreat">Specific Retreat</option>
+                                <option value="general">General Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea rows="5" required placeholder="Tell us about your goals..."></textarea>
+                        </div>
+                        <button type="submit" class="cta-button full-width">Send Message</button>
+                    </form>
+                </div>
+
+                <div class="contact-info">
+                    <div class="info-item">
+                        <span class="info-icon">📧</span>
+                        <div>
+                            <h4>Email</h4>
+                            <p>transform@atmaniti.in</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📱</span>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 98765 43210</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📍</span>
+                        <div>
+                            <h4>Address</h4>
+                            <p>Wellness Valley, Rishikesh, Uttarakhand 249137, India</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOGIN PAGE -->
+        <section id="loginPage" class="page-section">
+            <div class="auth-container">
+                <div class="auth-box">
+                    <h2>Welcome Back</h2>
+                    <p class="auth-subtitle">Login to access your dashboard</p>
+
+                    <form class="auth-form" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="loginEmail" required placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="loginPassword" required placeholder="••••••••">
+                        </div>
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox"> Remember me
+                            </label>
+                            <a href="#" class="link">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="cta-button full-width">Login</button>
+                    </form>
+
+                    <p class="auth-switch">Don't have an account? <a href="#" onclick="navigateTo('register')">Register</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGISTER PAGE -->
+        <section id="registerPage" class="page-section">
+            <div class="auth-container">
+                <div class="auth-box">
+                    <h2>Create Account</h2>
+                    <p class="auth-subtitle">Start your transformation journey</p>
+
+                    <form class="auth-form" onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="regName" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="regEmail" required placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="regPhone" placeholder="+91 98765 43210">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="regPassword" required placeholder="••••••••">
+                            <div class="password-strength" id="passwordStrength"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" id="regConfirmPassword" required placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label>Interest</label>
+                            <select id="regInterest" required>
+                                <option value="">Select your interest</option>
+                                <option value="individual">Individual Programs</option>
+                                <option value="organization">Organization Programs</option>
+                            </select>
+                        </div>
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" required> I agree to Terms & Conditions
+                            </label>
+                        </div>
+                        <button type="submit" class="cta-button full-width">Create Account</button>
+                    </form>
+
+                    <p class="auth-switch">Already have an account? <a href="#" onclick="navigateTo('login')">Login</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD PAGE -->
+        <section id="dashboardPage" class="page-section">
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <h2>Welcome, <span id="dashboardUserName">User</span>!</h2>
+                    <p>Your personal wellness dashboard</p>
+                </div>
+
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-info">
+                            <h3>0</h3>
+                            <p>Upcoming Bookings</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">❤️</div>
+                        <div class="stat-info">
+                            <h3>0</h3>
+                            <p>Saved Favorites</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3>0</h3>
+                            <p>Credits/Points</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-actions">
+                    <div class="action-card" onclick="navigateTo('retreats')">
+                        <div class="action-icon">🪷</div>
+                        <h3>Browse Retreats</h3>
+                        <p>Explore our transformative programs</p>
+                    </div>
+                    <div class="action-card" onclick="navigateTo('individuals')">
+                        <div class="action-icon">🌿</div>
+                        <h3>Individual Services</h3>
+                        <p>Personal growth programs</p>
+                    </div>
+                    <div class="action-card" onclick="alert('My Bookings - Feature coming soon!')">
+                        <div class="action-icon">📋</div>
+                        <h3>My Bookings</h3>
+                        <p>View your reservations</p>
+                    </div>
+                    <div class="action-card" onclick="alert('Profile Settings - Feature coming soon!')">
+                        <div class="action-icon">⚙️</div>
+                        <h3>My Profile</h3>
+                        <p>Update your information</p>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h3>Recommended for You</h3>
+                    <div class="recommendations-grid">
+                        <div class="recommendation-card">
+                            <h4>Himalayan Awakening</h4>
+                            <p>Perfect for beginners seeking holistic wellness</p>
+                            <button class="cta-button small" onclick="navigateTo('retreats')">View Details</button>
+                        </div>
+                        <div class="recommendation-card">
+                            <h4>Mindfulness Mastery</h4>
+                            <p>Start your meditation journey today</p>
+                            <button class="cta-button small" onclick="navigateTo('individuals')">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Retreat Details -->
+    <div id="retreatModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
