@@ -30,32 +30,68 @@ body{background:#f4f6f9;font-family:Inter,sans-serif}
 <i class="bi bi-credit-card"></i> Payment Operations Console
 </span>
 
-<div class="d-flex gap-2">
-<select class="form-select form-select-sm">
-<option>Last 15 minutes</option>
-<option>Last 30 minutes</option>
-<option>Last 1 hour</option>
-<option>Last 24 hours</option>
-</select>
-
-<select class="form-select form-select-sm" onchange="selectStore(this.value)">
+<select class="form-select form-select-sm w-auto" onchange="selectStore(this.value)">
 <option value="">All Stores</option>
 <option value="101">Store 101</option>
+<option value="108">Store 108</option>
 </select>
-</div>
 </nav>
 
 <div class="container-fluid p-4">
 
-<!-- ================= GLOBAL ================= -->
+<!-- ================= HOME ================= -->
 <div id="globalView">
+
 <div class="alert alert-warning">
-Approval deviation vs yesterday detected in 2 stores.
+Approval deviation detected in 2 stores vs yesterday.
+</div>
+
+<div class="row g-4 mb-4">
+<div class="col-md-3"><div class="card-ui text-center"><div class="muted">Total Stores</div><div class="metric">200</div></div></div>
+<div class="col-md-3"><div class="card-ui text-center"><div class="muted">Overall Approval</div><div class="metric">94.1%</div></div></div>
+<div class="col-md-3"><div class="card-ui text-center"><div class="muted">Stores Impacted</div><div class="metric warn">10</div></div></div>
+<div class="col-md-3"><div class="card-ui text-center"><div class="muted">Active Terminals</div><div class="metric">96%</div></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+<div class="col-md-4">
+<div class="card-ui beh-card" onclick="filterStoreBand('healthy')">
+🟢 Healthy Stores<br><span class="metric">162</span>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card-ui beh-card" onclick="filterStoreBand('watch')">
+🟡 Watch Stores<br><span class="metric">28</span>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card-ui beh-card" onclick="filterStoreBand('impacted')">
+🔴 Impacted Stores<br><span class="metric">10</span>
+</div>
 </div>
 </div>
 
-<!-- ================= STORE ================= -->
+<div class="card-ui">
+<h6>Top Impacted Stores</h6>
+<table class="table table-sm">
+<thead>
+<tr>
+<th>Store</th><th>Approval</th><th>Vs Yesterday</th>
+<th>Impacted Terminals</th><th>Top Reason</th>
+</tr>
+</thead>
+<tbody id="storeTable"></tbody>
+</table>
+</div>
+
+</div>
+
+<!-- ================= STORE DETAIL ================= -->
 <div id="storeView">
+
+<button class="btn btn-sm btn-outline-secondary mb-3" onclick="selectStore('')">
+← Back to All Stores
+</button>
 
 <h5 id="storeTitle" class="mb-3"></h5>
 
@@ -66,64 +102,41 @@ Approval deviation vs yesterday detected in 2 stores.
 <div class="col-md-3"><div class="card-ui"><div class="muted">Impacted Terminals</div><div class="metric warn" id="storeImpacted"></div></div></div>
 </div>
 
-<!-- Terminal behavior grouping -->
-<div class="row g-3 mb-3">
-<div class="col-md-3">
-<div class="card-ui beh-card" onclick="filterTerminals('impacted')">
-🔴 Impacted<br><span class="metric" id="cntImpacted"></span>
-</div>
-</div>
-<div class="col-md-3">
-<div class="card-ui beh-card" onclick="filterTerminals('degraded')">
-🟡 Degraded<br><span class="metric" id="cntDegraded"></span>
-</div>
-</div>
-<div class="col-md-3">
-<div class="card-ui beh-card" onclick="filterTerminals('healthy')">
-🟢 Healthy<br><span class="metric" id="cntHealthy"></span>
-</div>
-</div>
-<div class="col-md-3">
-<div class="card-ui beh-card" onclick="filterTerminals('all')">
-📋 All Terminals<br><span class="metric" id="cntAll"></span>
-</div>
-</div>
-</div>
-
 <div class="card-ui">
-<h6>Terminal Insights</h6>
-<table class="table table-sm align-middle">
+<h6>Terminal Summary</h6>
+<table class="table table-sm">
 <thead>
-<tr>
-<th>Terminal</th>
-<th>Txns</th>
-<th>Approval</th>
-<th>Vs Store Avg</th>
-<th>Top Decline</th>
-<th>Status</th>
-</tr>
+<tr><th>Terminal</th><th>Txns</th><th>Approval</th><th>Status</th></tr>
 </thead>
 <tbody id="terminalTable"></tbody>
 </table>
 </div>
 
 </div>
+
 </div>
 
 <script>
-const store={
-id:"101",name:"Store 101",
-approval:92.4,yesterday:95.1,txns:12480,
-terminals:[
-{t:"FP-01",tx:420,ap:96,reason:""},
-{t:"FP-02",tx:360,ap:88,reason:"HOST_TIMEOUT"},
-{t:"FP-03",tx:300,ap:81,reason:"HOST_TIMEOUT"},
-{t:"FP-04",tx:280,ap:90,reason:"NO_RESPONSE"},
-{t:"PH-01",tx:390,ap:95,reason:""}
-]
-};
+const stores=[
+{id:"101",name:"Store 101",approval:92.4,yesterday:95.1,imp:5,reason:"HOST_TIMEOUT"},
+{id:"108",name:"Store 108",approval:89.7,yesterday:93.8,imp:7,reason:"NO_RESPONSE"}
+];
 
-let currentFilter="impacted";
+function renderStores(){
+const tb=document.getElementById("storeTable");
+tb.innerHTML="";
+stores.forEach(s=>{
+const diff=(s.approval-s.yesterday).toFixed(1);
+tb.innerHTML+=`
+<tr onclick="selectStore('${s.id}')" style="cursor:pointer">
+<td>${s.name}</td>
+<td>${s.approval}%</td>
+<td class="${diff<0?'neg':'pos'}">${diff}%</td>
+<td>${s.imp}</td>
+<td>${s.reason}</td>
+</tr>`;
+});
+}
 
 function selectStore(id){
 if(!id){
@@ -131,57 +144,22 @@ document.getElementById("storeView").style.display="none";
 document.getElementById("globalView").style.display="block";
 return;
 }
+const s=stores.find(x=>x.id===id);
 document.getElementById("globalView").style.display="none";
 document.getElementById("storeView").style.display="block";
-document.getElementById("storeTitle").innerText=store.name;
-document.getElementById("storeApproval").innerText=store.approval+"%";
-document.getElementById("storeYesterday").innerText=store.yesterday+"%";
-document.getElementById("storeTxns").innerText=store.txns;
+document.getElementById("storeTitle").innerText=s.name;
+document.getElementById("storeApproval").innerText=s.approval+"%";
+document.getElementById("storeYesterday").innerText=s.yesterday+"%";
+document.getElementById("storeTxns").innerText="12,480";
+document.getElementById("storeImpacted").innerText=s.imp;
 
-categorize();
-filterTerminals("impacted");
-}
-
-function categorize(){
-let imp=0,deg=0,heal=0;
-store.terminals.forEach(t=>{
-const d=t.ap-store.approval;
-if(d<-10) imp++;
-else if(d<-3) deg++;
-else heal++;
-});
-document.getElementById("cntImpacted").innerText=imp;
-document.getElementById("cntDegraded").innerText=deg;
-document.getElementById("cntHealthy").innerText=heal;
-document.getElementById("cntAll").innerText=store.terminals.length;
-document.getElementById("storeImpacted").innerText=imp;
+document.getElementById("terminalTable").innerHTML=`
+<tr><td>FP-01</td><td>420</td><td>96%</td><td>Healthy</td></tr>
+<tr><td>FP-02</td><td>360</td><td>88%</td><td class="warn">Degraded</td></tr>
+<tr><td>FP-03</td><td>300</td><td>81%</td><td class="neg">Impacted</td></tr>`;
 }
 
-function filterTerminals(type){
-currentFilter=type;
-const tb=document.getElementById("terminalTable");
-tb.innerHTML="";
-store.terminals.forEach(t=>{
-const dev=(t.ap-store.approval).toFixed(1);
-let status="Healthy",cls="success";
-if(dev<-10){status="Impacted";cls="danger";}
-else if(dev<-3){status="Degraded";cls="warning";}
-if(type!=="all"){
-if(type==="impacted" && status!=="Impacted") return;
-if(type==="degraded" && status!=="Degraded") return;
-if(type==="healthy" && status!=="Healthy") return;
-}
-tb.innerHTML+=`
-<tr>
-<td>${t.t}</td>
-<td>${t.tx}</td>
-<td>${t.ap}%</td>
-<td class="${dev<0?'neg':'pos'}">${dev}%</td>
-<td>${t.reason||"-"}</td>
-<td><span class="badge bg-${cls}">${status}</span></td>
-</tr>`;
-});
-}
+renderStores();
 </script>
 
 </body>
