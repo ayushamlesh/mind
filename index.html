@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,6 @@
 <body>
 <div class="container-fluid p-4">
 
-<!-- HEADER -->
 <div class="d-flex justify-content-between align-items-center mb-3 sticky-header">
     <h4 class="fw-bold">Payment Operations Command Center</h4>
     <div class="btn-group">
@@ -42,7 +40,6 @@
     </div>
 </div>
 
-<!-- GLOBAL KPIs -->
 <div class="row g-3 mb-4">
     <div class="col-md-3"><div class="card p-3"><div class="muted">Stores</div><div class="kpi">200</div></div></div>
     <div class="col-md-3"><div class="card p-3"><div class="muted">Terminals</div><div class="kpi">12,430</div></div></div>
@@ -50,22 +47,47 @@
     <div class="col-md-3"><div class="card p-3"><div class="muted">Vs Yesterday</div><div class="kpi text-danger">-3.2%</div></div></div>
 </div>
 
-<!-- STORE HEALTH -->
 <div class="row g-3 mb-4">
-    <div class="col-md-4"><div class="card p-3" onclick="applyStoreFilter('green')" style="cursor:pointer;"><span class="pill pill-green">Healthy</span><div class="kpi">170</div></div></div>
-    <div class="col-md-4"><div class="card p-3" onclick="applyStoreFilter('yellow')" style="cursor:pointer;"><span class="pill pill-yellow">Watch</span><div class="kpi">20</div></div></div>
-    <div class="col-md-4"><div class="card p-3" onclick="applyStoreFilter('red')" style="cursor:pointer;"><span class="pill pill-red">Impacted</span><div class="kpi">10</div></div></div>
+    <div class="col-md-4">
+        <div class="card p-3" onclick="applyStoreFilter('green')" style="cursor:pointer;">
+            <span class="pill pill-green">Healthy</span>
+            <div class="kpi" id="healthyCnt">170</div>
+            <div class="muted">Normal performance</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3" onclick="applyStoreFilter('yellow')" style="cursor:pointer;">
+            <span class="pill pill-yellow">Watch</span>
+            <div class="kpi" id="watchCnt">20</div>
+            <div class="muted">Deviation vs yesterday</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3" onclick="applyStoreFilter('red')" style="cursor:pointer;">
+            <span class="pill pill-red">Impacted</span>
+            <div class="kpi" id="impactCnt">10</div>
+            <div class="muted">Immediate attention needed</div>
+        </div>
+    </div>
 </div>
 
-<!-- ALL STORES -->
 <div class="card">
-    <div class="card-header d-flex justify-content-between">
-        <span class="fw-semibold">All Stores</span>
+    <div class="card-header fw-semibold d-flex justify-content-between">
+        <span>All Stores</span>
         <input class="form-control form-control-sm w-25" placeholder="Search store" onkeyup="searchStore(this.value)">
     </div>
-    <div class="table-responsive" style="max-height:420px;">
+    <div class="table-responsive" style="max-height:420px; overflow:auto;">
         <table class="table table-hover mb-0">
-            <thead><tr><th>Store</th><th>Txn</th><th>Approval %</th><th>Vs Yesterday</th><th>Impacted</th><th>Status</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>Store</th>
+                    <th>Txn</th>
+                    <th>Approval %</th>
+                    <th>Vs Yesterday</th>
+                    <th>Impacted Terms</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
             <tbody id="storeTable"></tbody>
         </table>
     </div>
@@ -73,52 +95,189 @@
 
 </div>
 
+<div class="modal fade" id="storeModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="storeTitle"></h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-3"><div class="card p-3"><div class="muted">Approval %</div><div class="kpi" id="sApproval"></div></div></div>
+            <div class="col-md-3"><div class="card p-3"><div class="muted">Vs Yesterday</div><div class="kpi" id="sYesterday"></div></div></div>
+            <div class="col-md-3"><div class="card p-3"><div class="muted">Txn Volume</div><div class="kpi" id="sTxn"></div></div></div>
+            <div class="col-md-3"><div class="card p-3"><div class="muted">Terminals</div><div class="kpi" id="sTerms"></div></div></div>
+        </div>
+
+        <ul class="nav nav-tabs mb-3">
+          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#termTab">Terminals</button></li>
+          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#errorTab">Decline / Error Insights</button></li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="termTab">
+            <div class="mb-3">
+                <button class="btn btn-sm btn-outline-danger" onclick="filterTerminals('red')">Impacted</button>
+                <button class="btn btn-sm btn-outline-warning" onclick="filterTerminals('yellow')">Degraded</button>
+                <button class="btn btn-sm btn-outline-success" onclick="filterTerminals('green')">Healthy</button>
+                <button class="btn btn-sm btn-outline-primary" onclick="filterTerminals('all')">All</button>
+            </div>
+            <div class="row" id="terminalGrid"></div>
+          </div>
+
+          <div class="tab-pane fade" id="errorTab">
+            <table class="table table-sm table-hover">
+              <thead>
+                <tr>
+                  <th>Decline Reason</th>
+                  <th>Txn Count</th>
+                  <th>% of Store Txn</th>
+                  <th>Card Type</th>
+                  <th>Trend vs Yesterday</th>
+                </tr>
+              </thead>
+              <tbody id="errorTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// ---------- DUMMY DATA ----------
 const stores = [];
-let id = 1;
+let storeId = 1;
 
-function createStore(type){
+function createErrors(){
+    return [
+        { reason:'HOST_TIMEOUT', count:Math.floor(Math.random()*300)+50, pct:12.5, card:'VISA', trend:-2.1 },
+        { reason:'BANK_DECLINE', count:Math.floor(Math.random()*500)+100, pct:18.3, card:'MC', trend:1.4 },
+        { reason:'NETWORK_ERROR', count:Math.floor(Math.random()*200)+30, pct:6.8, card:'AMEX', trend:-0.6 }
+    ];
+}
+
+function createStore(status){
+    const terminalCount = Math.floor(Math.random()*50)+50;
+    let redCount = 0, yellowCount = 0;
+
+    if(status==='green') yellowCount = Math.floor(Math.random()*2);
+    else if(status==='yellow'){ redCount = 1; yellowCount = 3; }
+    else { redCount = 7; yellowCount = 5; }
+
     const terminals = [];
-    let red = type==='red'?8:type==='yellow'?2:0;
-    let yellow = type==='red'?5:type==='yellow'?3:1;
-    const total = 60;
-
-    for(let i=0;i<total;i++){
+    for(let i=0;i<terminalCount;i++){
         let health='green';
-        if(i<red) health='red'; else if(i<red+yellow) health='yellow';
-        terminals.push({health});
+        if(i<redCount) health='red';
+        else if(i<redCount+yellowCount) health='yellow';
+        terminals.push({
+            id:`T-${i+1}`,
+            health,
+            approval:+(health==='green'?94:health==='yellow'?86:72).toFixed(1),
+            decline: health==='red'?'HOST_TIMEOUT':health==='yellow'?'BANK_DECLINE':'-'
+        });
     }
 
-    return {id:id++, name:`Store ${id-1}`, txn:Math.floor(Math.random()*8000), approval:90+Math.random()*5, yesterday:(Math.random()*6-3).toFixed(1), terminals};
+    return {
+        id: storeId++,
+        name:`Store ${storeId-1}`,
+        txn:Math.floor(Math.random()*9000)+1000,
+        approval:+(85+Math.random()*10).toFixed(1),
+        yesterday:+(Math.random()*6-3).toFixed(1),
+        terminals,
+        errors:createErrors()
+    };
 }
 
 for(let i=0;i<170;i++) stores.push(createStore('green'));
 for(let i=0;i<20;i++) stores.push(createStore('yellow'));
 for(let i=0;i<10;i++) stores.push(createStore('red'));
 
-function getStatus(s){ return s.terminals.filter(t=>t.health==='red').length>5?'red':s.terminals.some(t=>t.health==='red')?'yellow':'green'; }
+let currentStore=null;
+let activeStoreFilter=null;
+
+function getStoreStatus(store){
+    const impacted = store.terminals.filter(t=>t.health==='red').length;
+    return impacted>5?'red':impacted>0?'yellow':'green';
+}
 
 function renderStores(list=stores){
-    const tb=document.getElementById('storeTable'); tb.innerHTML='';
-    list.forEach(s=>{
-        const st=getStatus(s);
-        tb.innerHTML+=`<tr class='store-row'><td>${s.name}</td><td>${s.txn}</td><td>${s.approval.toFixed(1)}%</td><td>${s.yesterday}%</td><td>${s.terminals.filter(t=>t.health==='red').length}</td><td><span class='pill pill-${st}'>${st}</span></td></tr>`;
+    const tb=document.getElementById('storeTable');
+    tb.innerHTML='';
+    list.slice(0,80).forEach(s=>{
+        const impacted=s.terminals.filter(t=>t.health==='red').length;
+        const status=getStoreStatus(s);
+        tb.innerHTML+=`<tr class='store-row' onclick='openStore(${s.id})'>
+            <td>${s.name}</td>
+            <td>${s.txn}</td>
+            <td>${s.approval}%</td>
+            <td class='${s.yesterday<0?'text-danger':'text-success'}'>${s.yesterday}%</td>
+            <td>${impacted}</td>
+            <td><span class='pill pill-${status}'>${status}</span></td>
+        </tr>`;
     });
 }
 
-function applyStoreFilter(status){ renderStores(stores.filter(s=>getStatus(s)===status)); }
+function applyStoreFilter(status){
+    activeStoreFilter=status;
+    renderStores(stores.filter(s=>getStoreStatus(s)===status));
+}
 
 function searchStore(v){
     const value=v.toLowerCase();
     renderStores(stores.filter(s=>s.name.toLowerCase().includes(value)));
 }
 
-function setTime(btn){ document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
+function openStore(id){
+    currentStore=stores.find(s=>s.id===id);
+    storeTitle.innerText=currentStore.name;
+    sApproval.innerText=currentStore.approval+'%';
+    sYesterday.innerText=currentStore.yesterday+'%';
+    sTxn.innerText=currentStore.txn;
+    sTerms.innerText=currentStore.terminals.length;
+    filterTerminals('red');
+    renderErrors();
+    new bootstrap.Modal(document.getElementById('storeModal')).show();
+}
+
+function filterTerminals(type){
+    const g=document.getElementById('terminalGrid');
+    g.innerHTML='';
+    currentStore.terminals.filter(t=>type==='all'||t.health===type).slice(0,48).forEach(t=>{
+        g.innerHTML+=`<div class='col-md-3 mb-3'>
+            <div class='card terminal-card terminal-${t.health} p-3'>
+                <div class='fw-semibold'>${t.id}</div>
+                <div class='muted'>Approval ${t.approval}%</div>
+                <div class='muted'>Top Error ${t.decline}</div>
+            </div>
+        </div>`;
+    });
+}
+
+function renderErrors(){
+    const tb=document.getElementById('errorTable');
+    tb.innerHTML='';
+    (currentStore.errors||[]).forEach(e=>{
+        tb.innerHTML+=`<tr>
+            <td>${e.reason}</td>
+            <td>${e.count}</td>
+            <td>${e.pct}%</td>
+            <td>${e.card}</td>
+            <td class='${e.trend<0?'text-danger':'text-success'}'>${e.trend}%</td>
+        </tr>`;
+    });
+}
+
+function setTime(btn,v){
+    document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+}
 
 renderStores();
-</script
-    >
+</script>
 </body>
-                                                                                   </html>
+</html>
