@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8"/>
 <title>Payment Operations Console</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -10,23 +10,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-body { background:#f4f6f9; font-family:Inter,sans-serif }
-.card-ui { background:#fff; border-radius:14px; padding:16px; box-shadow:0 4px 12px rgba(0,0,0,.06) }
-.metric { font-size:26px; font-weight:600 }
-.neg { color:#dc3545 }
-.warn { color:#fd7e14 }
-.pos { color:#198754 }
-.muted { color:#6c757d }
-.badge-status { font-size:12px }
-.area-card { cursor:pointer; transition:.2s }
-.area-card:hover { transform:translateY(-3px) }
-#storeView { display:none }
+body{background:#f4f6f9;font-family:Inter,sans-serif}
+.card-ui{background:#fff;border-radius:14px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.metric{font-size:26px;font-weight:600}
+.pos{color:#198754}
+.warn{color:#fd7e14}
+.neg{color:#dc3545}
+.muted{color:#6c757d}
+.badge-status{font-size:12px}
+.area-card{cursor:pointer;transition:.2s}
+.area-card:hover{transform:translateY(-3px)}
+#storeView{display:none}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <nav class="navbar navbar-dark bg-dark px-4">
 <span class="navbar-brand fw-semibold">
 <i class="bi bi-credit-card"></i> Payment Operations Console
@@ -44,37 +43,58 @@ body { background:#f4f6f9; font-family:Inter,sans-serif }
 <select class="form-select form-select-sm" onchange="selectStore(this.value)">
 <option value="">All Stores</option>
 <option value="101">Store 101</option>
+<option value="108">Store 108</option>
 </select>
 </div>
 </nav>
 
 <div class="container-fluid p-4">
 
-<!-- GLOBAL VIEW -->
+<!-- ================= GLOBAL VIEW ================= -->
 <div id="globalView">
 
-<div class="alert alert-warning mb-4">
+<div class="alert alert-warning">
 <strong>Insights:</strong>
-6 terminals across stores operating below their store averages.
-Debit declines dominating HOST_TIMEOUT.
+Approval degradation observed vs yesterday in 2 stores.
+HOST_TIMEOUT concentrated in Fuel terminals.
 </div>
 
 <div class="row g-4 mb-4">
 <div class="col-md-3"><div class="card-ui text-center"><div class="muted">Total Txns</div><div class="metric">82,140</div></div></div>
 <div class="col-md-3"><div class="card-ui text-center"><div class="muted">Overall Approval</div><div class="metric">94.1%</div></div></div>
 <div class="col-md-3"><div class="card-ui text-center"><div class="muted">Active Terminals</div><div class="metric">97%</div></div></div>
-<div class="col-md-3"><div class="card-ui text-center"><div class="muted">Deviating Terminals</div><div class="metric warn">6</div></div></div>
+<div class="col-md-3"><div class="card-ui text-center"><div class="muted">Stores Deviating vs Yesterday</div><div class="metric warn">2</div></div></div>
+</div>
+
+<div class="card-ui mb-4">
+<h6>Store Impact Ranking</h6>
+<table class="table table-sm">
+<thead>
+<tr>
+<th>Store</th>
+<th>Txns</th>
+<th>Approval</th>
+<th>Vs Yesterday</th>
+<th>Impacted Terminals</th>
+<th>Top Reason</th>
+</tr>
+</thead>
+<tbody id="storeTable"></tbody>
+</table>
 </div>
 
 <div class="card-ui">
-<h6>Store Overview</h6>
+<h6>Error → Store Destination</h6>
 <table class="table table-sm">
 <thead>
-<tr><th>Store</th><th>Approval %</th><th>Deviating Terminals</th><th>Top Reason</th></tr>
+<tr><th>Error</th><th>% Declines</th><th>Stores</th><th>Top Store</th></tr>
 </thead>
 <tbody>
-<tr onclick="selectStore('101')" style="cursor:pointer">
-<td>Store 101</td><td class="neg">92.4%</td><td>5</td><td>HOST_TIMEOUT</td>
+<tr onclick="filterByError('HOST_TIMEOUT')" style="cursor:pointer">
+<td>HOST_TIMEOUT</td><td class="neg">46%</td><td>3</td><td>Store 101</td>
+</tr>
+<tr onclick="filterByError('NO_RESPONSE')" style="cursor:pointer">
+<td>NO_RESPONSE</td><td>18%</td><td>2</td><td>Store 108</td>
 </tr>
 </tbody>
 </table>
@@ -82,108 +102,52 @@ Debit declines dominating HOST_TIMEOUT.
 
 </div>
 
-<!-- STORE VIEW -->
+<!-- ================= STORE VIEW ================= -->
 <div id="storeView">
 
-<h5 class="mb-3">Store 101 – Operational View</h5>
+<h5 class="mb-3" id="storeTitle"></h5>
 
 <div class="row g-4 mb-4">
-<div class="col-md-3"><div class="card-ui"><div class="muted">Store Avg Approval</div><div class="metric">92.4%</div></div></div>
-<div class="col-md-3"><div class="card-ui"><div class="muted">Total Terminals</div><div class="metric">12</div></div></div>
-<div class="col-md-3"><div class="card-ui"><div class="muted">Below Avg</div><div class="metric warn">4</div></div></div>
-<div class="col-md-3"><div class="card-ui"><div class="muted">Txn Volume</div><div class="metric">12,480</div></div></div>
-</div>
-
-<h6>Area Behavior</h6>
-<div class="row g-4 mb-4">
 <div class="col-md-3">
-<div class="card-ui area-card">
-<strong>Fuel</strong><br>
-Approval: <span class="neg">87%</span><br>
-Deviation: −5.4%<br>
-Top: HOST_TIMEOUT
-</div>
-</div>
-<div class="col-md-3">
-<div class="card-ui area-card">
-<strong>Pharmacy</strong><br>
-Approval: 94%<br>
-Deviation: +1.6%<br>
-Normal
-</div>
+<div class="card-ui">
+<div class="muted">Approval</div>
+<div class="metric" id="storeApproval"></div>
+<div class="muted">Yesterday: <span id="storeYesterday"></span></div>
 </div>
 </div>
 
-<h6>Terminal Behavior (All Terminals)</h6>
+<div class="col-md-3">
+<div class="card-ui">
+<div class="muted">Txn Volume</div>
+<div class="metric" id="storeTxns"></div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card-ui">
+<div class="muted">Debit Share</div>
+<div class="metric" id="storeDebit"></div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card-ui">
+<div class="muted">Impacted Terminals</div>
+<div class="metric warn" id="storeImpacted"></div>
+</div>
+</div>
+</div>
+
+<h6>Terminal Behavior (All)</h6>
 <div class="card-ui">
 <table class="table table-sm align-middle">
 <thead>
 <tr>
-<th>Terminal</th>
-<th>Txns</th>
-<th>Approval</th>
-<th>Deviation</th>
-<th>Debit %</th>
-<th>Credit %</th>
-<th>Top Decline Reason</th>
-<th>Status</th>
+<th>Terminal</th><th>Txns</th><th>Approval</th>
+<th>Vs Store Avg</th><th>Top Reason</th><th>Status</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>FP-01</td>
-<td>410</td>
-<td>96%</td>
-<td class="pos">+3.6%</td>
-<td>61%</td>
-<td>31%</td>
-<td>-</td>
-<td><span class="badge bg-success badge-status">Healthy</span></td>
-</tr>
-<tr>
-<td>FP-02</td>
-<td>320</td>
-<td>89%</td>
-<td class="warn">−3.4%</td>
-<td>73%</td>
-<td>18%</td>
-<td>HOST_TIMEOUT</td>
-<td><span class="badge bg-warning badge-status">Watch</span></td>
-</tr>
-<tr>
-<td>FP-03</td>
-<td>290</td>
-<td>81%</td>
-<td class="neg">−11.4%</td>
-<td>76%</td>
-<td>15%</td>
-<td>HOST_TIMEOUT</td>
-<td><span class="badge bg-danger badge-status">Impacted</span></td>
-</tr>
-<tr>
-<td>PH-01</td>
-<td>380</td>
-<td>95%</td>
-<td class="pos">+2.6%</td>
-<td>58%</td>
-<td>34%</td>
-<td>-</td>
-<td><span class="badge bg-success badge-status">Healthy</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h6 class="mt-4">Decline Intelligence</h6>
-<div class="card-ui">
-<table class="table table-sm">
-<thead>
-<tr><th>Reason</th><th>% of Declines</th><th>Dominant Card</th><th>Top Area</th></tr>
-</thead>
-<tbody>
-<tr><td>HOST_TIMEOUT</td><td class="neg">64%</td><td>Debit</td><td>Fuel</td></tr>
-<tr><td>INSUFFICIENT_FUNDS</td><td>11%</td><td>Debit</td><td>Pharmacy</td></tr>
-</tbody>
+<tbody id="terminalTable"></tbody>
 </table>
 </div>
 
@@ -192,15 +156,87 @@ Normal
 </div>
 
 <script>
+const stores = [
+{
+id:"101",name:"Store 101",
+approval:92.4,yesterday:95.1,
+txns:12480,debit:64,impacted:5,
+topReason:"HOST_TIMEOUT",
+terminals:[
+{t:"FP-01",tx:410,ap:96,reason:""},
+{t:"FP-02",tx:320,ap:89,reason:"HOST_TIMEOUT"},
+{t:"FP-03",tx:290,ap:81,reason:"HOST_TIMEOUT"},
+{t:"PH-01",tx:380,ap:95,reason:""}
+]
+},
+{
+id:"108",name:"Store 108",
+approval:89.7,yesterday:93.8,
+txns:8920,debit:59,impacted:7,
+topReason:"NO_RESPONSE",
+terminals:[
+{t:"FL-01",tx:350,ap:84,reason:"NO_RESPONSE"},
+{t:"FL-02",tx:300,ap:88,reason:"NO_RESPONSE"}
+]
+}
+];
+
+function renderStores(filter=null){
+const body=document.getElementById("storeTable");
+body.innerHTML="";
+stores.filter(s=>!filter||s.topReason===filter).forEach(s=>{
+const diff=(s.approval-s.yesterday).toFixed(1);
+body.innerHTML+=`
+<tr onclick="selectStore('${s.id}')" style="cursor:pointer">
+<td>${s.name}</td>
+<td>${s.txns}</td>
+<td>${s.approval}%</td>
+<td class="${diff<0?'neg':'pos'}">${diff}%</td>
+<td>${s.impacted}</td>
+<td>${s.topReason}</td>
+</tr>`;
+});
+}
+
+function filterByError(e){ renderStores(e); }
+
 function selectStore(id){
-if(id){
-document.getElementById("globalView").style.display="none";
-document.getElementById("storeView").style.display="block";
-}else{
+if(!id){
 document.getElementById("storeView").style.display="none";
 document.getElementById("globalView").style.display="block";
+return;
 }
+const s=stores.find(x=>x.id===id);
+document.getElementById("globalView").style.display="none";
+document.getElementById("storeView").style.display="block";
+document.getElementById("storeTitle").innerText=s.name;
+document.getElementById("storeApproval").innerText=s.approval+"%";
+document.getElementById("storeYesterday").innerText=s.yesterday+"%";
+document.getElementById("storeTxns").innerText=s.txns;
+document.getElementById("storeDebit").innerText=s.debit+"%";
+document.getElementById("storeImpacted").innerText=s.impacted;
+
+const avg=s.approval;
+const tb=document.getElementById("terminalTable");
+tb.innerHTML="";
+s.terminals.forEach(t=>{
+const dev=(t.ap-avg).toFixed(1);
+let status="Healthy",cls="success";
+if(dev<-10){status="Impacted";cls="danger";}
+else if(dev<-3){status="Watch";cls="warning";}
+tb.innerHTML+=`
+<tr>
+<td>${t.t}</td>
+<td>${t.tx}</td>
+<td>${t.ap}%</td>
+<td class="${dev<0?'neg':'pos'}">${dev}%</td>
+<td>${t.reason||"-"}</td>
+<td><span class="badge bg-${cls}">${status}</span></td>
+</tr>`;
+});
 }
+
+renderStores();
 </script>
 
 </body>
