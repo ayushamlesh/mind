@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Payment Operations Console</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{background:#f4f6f9;font-family:Inter,sans-serif}
+.card-ui{background:#fff;border-radius:14px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.metric{font-size:26px;font-weight:600}
+.neg{color:#dc3545}
+.warn{color:#fd7e14}
+.pos{color:#198754}
+.muted{color:#6c757d}
+.click{cursor:pointer}
+#storeView{display:none}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark px-4">
+<span class="navbar-brand fw-semibold">
+<i class="bi bi-credit-card"></i> Payment Operations Console
+</span>
+
+<div class="d-flex gap-2">
+<select class="form-select form-select-sm">
+<option>Last 15 minutes</option>
+<option>Last 30 minutes</option>
+<option>Last 1 hour</option>
+<option>Last 24 hours</option>
+</select>
+
+<select class="form-select form-select-sm" onchange="openStore(this.value)">
+<option value="">All Stores</option>
+<option value="101">Store 101</option>
+<option value="108">Store 108</option>
+</select>
+</div>
+</nav>
+
+<div class="container-fluid p-4">
+
+<!-- ================= ALL STORES VIEW ================= -->
+<div id="globalView">
+
+<div class="alert alert-warning">
+<strong>Insights:</strong> Approval degradation vs yesterday in 2 stores.  
+HOST_TIMEOUT dominant in fuel terminals.
+</div>
+
+<!-- Store health bands -->
+<div class="row g-4 mb-4">
+<div class="col-md-4">
+<div class="card-ui text-center click" onclick="filterStores('healthy')">
+🟢 Healthy Stores
+<div class="metric" id="cntHealthy"></div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card-ui text-center click" onclick="filterStores('watch')">
+🟡 Watch Stores
+<div class="metric warn" id="cntWatch"></div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card-ui text-center click" onclick="filterStores('impacted')">
+🔴 Impacted Stores
+<div class="metric neg" id="cntImpacted"></div>
+</div>
+</div>
+</div>
+
+<div class="card-ui">
+<div class="d-flex justify-content-between mb-2">
+<h6>Store Overview</h6>
+<input class="form-control form-control-sm w-25" placeholder="Search store..."
+       onkeyup="renderStores(this.value)">
+</div>
+
+<table class="table table-sm align-middle">
+<thead>
+<tr>
+<th>Store</th>
+<th>Txns</th>
+<th>Approval</th>
+<th>Vs Yesterday</th>
+<th>Impacted Terminals</th>
+<th>Top Decline</th>
+</tr>
+</thead>
+<tbody id="storeTable"></tbody>
+</table>
+</div>
+
+</div>
+
+<!-- ================= STORE VIEW ================= -->
+<div id="storeView">
+
+<button class="btn btn-sm btn-outline-secondary mb-3" onclick="backToAll()">
+← Back to All Stores
+</button>
+
+<h5 id="storeTitle" class="mb-3"></h5>
+
+<div class="row g-4 mb-4">
+<div class="col-md-3"><div class="card-ui"><div class="muted">Approval</div><div class="metric" id="sApproval"></div></div></div>
+<div class="col-md-3"><div class="card-ui"><div class="muted">Yesterday</div><div class="metric" id="sYesterday"></div></div></div>
+<div class="col-md-3"><div class="card-ui"><div class="muted">Txns</div><div class="metric" id="sTxns"></div></div></div>
+<div class="col-md-3"><div class="card-ui"><div class="muted">Impacted Terminals</div><div class="metric warn" id="sImpacted"></div></div></div>
+</div>
+
+<!-- Terminal behavior grouping -->
+<div class="row g-3 mb-3">
+<div class="col-md-3"><div class="card-ui click" onclick="filterTerminals('impacted')">🔴 Impacted<br><span class="metric" id="tImp"></span></div></div>
+<div class="col-md-3"><div class="card-ui click" onclick="filterTerminals('degraded')">🟡 Degraded<br><span class="metric" id="tDeg"></span></div></div>
+<div class="col-md-3"><div class="card-ui click" onclick="filterTerminals('healthy')">🟢 Healthy<br><span class="metric" id="tHeal"></span></div></div>
+<div class="col-md-3"><div class="card-ui click" onclick="filterTerminals('all')">📋 All<br><span class="metric" id="tAll"></span></div></div>
+</div>
+
+<div class="card-ui">
+<h6>Terminal Insights</h6>
+<table class="table table-sm align-middle">
+<thead>
+<tr>
+<th>Terminal</th>
+<th>Txns</th>
+<th>Approval</th>
+<th>Vs Store Avg</th>
+<th>Top Decline</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="terminalTable"></tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+
+<script>
+// ------------------ DUMMY DATA ------------------
+const stores=[
+{
+id:"101",name:"Store 101",txns:12480,approval:92.4,yesterday:95.1,reason:"HOST_TIMEOUT",
+terminals:[
+{t:"FP-01",tx:420,ap:96,reason:""},
+{t:"FP-02",tx:360,ap:88,reason:"HOST_TIMEOUT"},
+{t:"FP-03",tx:300,ap:81,reason:"HOST_TIMEOUT"},
+{t:"PH-01",tx:390,ap:95,reason:""}
+]
+},
+{
+id:"108",name:"Store 108",txns:8920,approval:89.7,yesterday:93.8,reason:"NO_RESPONSE",
+terminals:[
+{t:"FL-01",tx:350,ap:84,reason:"NO_RESPONSE"},
+{t:"FL-02",tx:300,ap:88,reason:"NO_RESPONSE"},
+{t:"PH-02",tx:410,ap:93,reason:""}
+]
+},
+{
+id:"115",name:"Store 115",txns:10220,approval:96.8,yesterday:96.5,reason:"-",
+terminals:[
+{t:"PH-01",tx:500,ap:97,reason:""},
+{t:"PH-02",tx:460,ap:96,reason:""}
+]
+}
+];
+
+let storeFilter="all";
+let activeStore=null;
+
+// ------------------ GLOBAL VIEW ------------------
+function classifyStore(s){
+const diff=s.approval-s.yesterday;
+if(diff<-3) return "impacted";
+if(diff<0) return "watch";
+return "healthy";
+}
+
+function renderSummary(){
+let h=0,w=0,i=0;
+stores.forEach(s=>{
+const c=classifyStore(s);
+if(c==="healthy")h++;
+if(c==="watch")w++;
+if(c==="impacted")i++;
+});
+cntHealthy.innerText=h;
+cntWatch.innerText=w;
+cntImpacted.innerText=i;
+}
+
+function renderStores(search=""){
+storeTable.innerHTML="";
+stores.filter(s=>{
+if(storeFilter!=="all" && classifyStore(s)!==storeFilter) return false;
+if(search && !s.name.toLowerCase().includes(search.toLowerCase())) return false;
+return true;
+}).sort((a,b)=>a.approval-b.approval)
+.forEach(s=>{
+const diff=(s.approval-s.yesterday).toFixed(1);
+storeTable.innerHTML+=`
+<tr class="click" onclick="openStore('${s.id}')">
+<td>${s.name}</td>
+<td>${s.txns}</td>
+<td>${s.approval}%</td>
+<td class="${diff<0?'neg':'pos'}">${diff}%</td>
+<td>${s.terminals.filter(t=>t.ap < s.approval-10).length}</td>
+<td>${s.reason}</td>
+</tr>`;
+});
+}
+
+function filterStores(t){
+storeFilter=t;
+renderStores();
+}
+
+// ------------------ STORE VIEW ------------------
+function openStore(id){
+if(!id){backToAll();return;}
+activeStore=stores.find(s=>s.id===id);
+globalView.style.display="none";
+storeView.style.display="block";
+
+storeTitle.innerText=activeStore.name;
+sApproval.innerText=activeStore.approval+"%";
+sYesterday.innerText=activeStore.yesterday+"%";
+sTxns.innerText=activeStore.txns;
+
+const impacted=activeStore.terminals.filter(t=>t.ap<activeStore.approval-10).length;
+sImpacted.innerText=impacted;
+
+categorizeTerminals();
+filterTerminals("impacted");
+}
+
+function categorizeTerminals(){
+let imp=0,deg=0,heal=0;
+activeStore.terminals.forEach(t=>{
+const d=t.ap-activeStore.approval;
+if(d<-10)imp++;
+else if(d<-3)deg++;
+else heal++;
+});
+tImp.innerText=imp;
+tDeg.innerText=deg;
+tHeal.innerText=heal;
+tAll.innerText=activeStore.terminals.length;
+}
+
+function filterTerminals(type){
+terminalTable.innerHTML="";
+activeStore.terminals.forEach(t=>{
+const dev=(t.ap-activeStore.approval).toFixed(1);
+let status="Healthy",cls="success";
+if(dev<-10){status="Impacted";cls="danger";}
+else if(dev<-3){status="Degraded";cls="warning";}
+if(type!=="all"){
+if(type==="impacted"&&status!=="Impacted")return;
+if(type==="degraded"&&status!=="Degraded")return;
+if(type==="healthy"&&status!=="Healthy")return;
+}
+terminalTable.innerHTML+=`
+<tr>
+<td>${t.t}</td>
+<td>${t.tx}</td>
+<td>${t.ap}%</td>
+<td class="${dev<0?'neg':'pos'}">${dev}%</td>
+<td>${t.reason||"-"}</td>
+<td><span class="badge bg-${cls}">${status}</span></td>
+</tr>`;
+});
+}
+
+function backToAll(){
+storeView.style.display="none";
+globalView.style.display="block";
+}
+
+// INIT
+renderSummary();
+renderStores();
+</script>
+
+</body>
+  </html>
+  
