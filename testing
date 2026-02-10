@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Transaction Monitoring</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{font-family:Inter,sans-serif;background:#f5f7fb}
+.card-ui{background:#fff;border-radius:14px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.metric{font-size:24px;font-weight:600}
+.negative{color:#dc3545}
+.positive{color:#28a745}
+.area-card{cursor:pointer;transition:.2s}
+.area-card:hover{transform:translateY(-3px)}
+.badge-impact{background:#dc3545}
+#detailPanel{width:500px;display:none;z-index:3000}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<nav class="navbar navbar-dark bg-dark px-4">
+<span class="navbar-brand fw-semibold">
+<i class="bi bi-activity"></i> Transaction Monitoring
+</span>
+
+<div class="d-flex gap-2 align-items-center">
+<select class="form-select form-select-sm" style="width:200px">
+<option selected>Last 15 minutes</option>
+<option>Last 30 minutes</option>
+<option>Last 1 hour</option>
+<option>Last 4 hours</option>
+<option>Last 24 hours</option>
+<option>Custom (Max 7 days)</option>
+</select>
+</div>
+</nav>
+
+<div class="container-fluid p-4">
+
+<!-- FLOW HEALTH -->
+<div class="card-ui mb-4">
+<h6 class="text-muted">Transaction Flow Health</h6>
+<div class="metric negative">
+Debit approvals dropped from 96.2% → 88.1% (last 15 min)
+</div>
+<div class="small text-muted mt-1">
+Change detected compared to previous window
+</div>
+</div>
+
+<!-- TXN TYPE HEALTH -->
+<h6 class="mb-2">Transaction Type Health</h6>
+<div class="row g-4 mb-4">
+<div class="col-md-4">
+<div class="card-ui">
+<strong>Debit</strong><br>
+Volume: 8,420<br>
+Approval: <span class="negative">88.1%</span><br>
+Decline: 11.9%
+</div>
+</div>
+<div class="col-md-4">
+<div class="card-ui">
+<strong>Credit</strong><br>
+Volume: 4,210<br>
+Approval: <span class="positive">96.4%</span><br>
+Decline: 3.6%
+</div>
+</div>
+<div class="col-md-4">
+<div class="card-ui">
+<strong>Gift</strong><br>
+Volume: 980<br>
+Approval: <span class="positive">98.2%</span><br>
+Decline: 1.8%
+</div>
+</div>
+</div>
+
+<!-- DECLINE INTELLIGENCE -->
+<h6 class="mb-2">Decline Intelligence (Grouped)</h6>
+<div class="card-ui mb-4">
+<table class="table table-sm">
+<thead>
+<tr><th>Category</th><th>Reason</th><th>Contribution</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Host</td>
+<td>HOST_TIMEOUT</td>
+<td class="negative">42%</td>
+<td>Upstream / processor latency</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>NO_RESPONSE</td>
+<td>18%</td>
+<td>Intermittent connectivity</td>
+</tr>
+<tr>
+<td>Card</td>
+<td>INSUFFICIENT_FUNDS</td>
+<td>9%</td>
+<td>Normal consumer behavior</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- AREA IMPACT -->
+<h6 class="mb-2">Area Impact</h6>
+<div class="row g-4 mb-4">
+<div class="col-md-3">
+<div class="card-ui area-card" onclick="openDetail()">
+<strong>Fuel Pumps</strong><br>
+<span class="badge badge-impact">82% of HOST_TIMEOUT</span><br>
+3 terminals contributing
+</div>
+</div>
+<div class="col-md-3">
+<div class="card-ui area-card">
+<strong>Pharmacy</strong><br>
+Minor card declines only
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- DETAIL PANEL -->
+<div id="detailPanel" class="position-fixed top-0 end-0 bg-white h-100 shadow-lg overflow-auto">
+<div class="p-3 border-bottom d-flex justify-content-between">
+<strong>Fuel Pumps – Terminal Impact</strong>
+<button class="btn btn-sm btn-outline-secondary" onclick="closeDetail()">✕</button>
+</div>
+
+<div class="p-3">
+
+<h6>Impacted Terminals (Sorted by Impact)</h6>
+<table class="table table-sm">
+<thead>
+<tr><th>Terminal</th><th>% of Declines</th><th>Top Error</th><th>Since</th></tr>
+</thead>
+<tbody>
+<tr><td>FP-02</td><td class="negative">34%</td><td>HOST_TIMEOUT</td><td>12 min</td></tr>
+<tr><td>FP-03</td><td class="negative">29%</td><td>HOST_TIMEOUT</td><td>14 min</td></tr>
+<tr><td>FP-01</td><td class="negative">19%</td><td>NO_RESPONSE</td><td>10 min</td></tr>
+</tbody>
+</table>
+
+<h6 class="mt-4">Sample Transactions</h6>
+<table class="table table-sm">
+<thead>
+<tr><th>Txn ID</th><th>Card</th><th>Status</th><th>Reason</th></tr>
+</thead>
+<tbody>
+<tr><td>TX99123</td><td>Debit</td><td class="negative">Declined</td><td>HOST_TIMEOUT</td></tr>
+<tr><td>TX99124</td><td>Debit</td><td class="negative">Declined</td><td>HOST_TIMEOUT</td></tr>
+</tbody>
+</table>
+
+</div>
+</div>
+
+<script>
+function openDetail(){
+document.getElementById("detailPanel").style.display="block";
+}
+function closeDetail(){
+document.getElementById("detailPanel").style.display="none";
+}
+</script>
+
+</body>
+</html>
