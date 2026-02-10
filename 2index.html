@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Payment Operations Dashboard</title>
+    <style>
+        body { font-family: Inter, Arial, sans-serif; background:#f4f6fa; margin:0; }
+        header { background:#0f172a; color:#fff; padding:16px 24px; display:flex; justify-content:space-between; align-items:center; }
+        h1 { font-size:18px; margin:0; }
+        .container { padding:20px; }
+        .card { background:#fff; border-radius:10px; padding:16px; box-shadow:0 4px 12px rgba(0,0,0,.06); margin-bottom:16px; }
+        .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+        .metric { font-size:22px; font-weight:600; }
+        .muted { color:#6b7280; font-size:12px; }
+        .health { display:flex; gap:12px; }
+        .badge { padding:6px 10px; border-radius:20px; font-size:12px; cursor:pointer; }
+        .green { background:#dcfce7; color:#166534; }
+        .yellow { background:#fef9c3; color:#854d0e; }
+        .red { background:#fee2e2; color:#7f1d1d; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { padding:10px; border-bottom:1px solid #e5e7eb; text-align:left; font-size:13px; }
+        th { background:#f8fafc; }
+        tr:hover { background:#f1f5f9; cursor:pointer; }
+        .filters { display:flex; gap:12px; margin-bottom:12px; }
+        select { padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; }
+        .pill { padding:4px 8px; border-radius:12px; font-size:11px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Payment Transaction Monitoring</h1>
+    <select id="timeFilter">
+        <option value="15">Last 15 mins</option>
+        <option value="30">Last 30 mins</option>
+        <option value="24">Last 24 hrs</option>
+        <option value="48">Last 48 hrs</option>
+        <option value="all">All Day</option>
+    </select>
+</header>
+
+<div class="container">
+
+    <!-- GLOBAL INSIGHTS -->
+    <div class="card grid">
+        <div>
+            <div class="metric" id="totalStores"></div>
+            <div class="muted">Total Stores</div>
+        </div>
+        <div>
+            <div class="metric" id="totalTx"></div>
+            <div class="muted">Transactions</div>
+        </div>
+        <div>
+            <div class="metric" id="approval"></div>
+            <div class="muted">Approval %</div>
+        </div>
+        <div>
+            <div class="metric" id="decline"></div>
+            <div class="muted">Decline %</div>
+        </div>
+    </div>
+
+    <!-- STORE HEALTH -->
+    <div class="card">
+        <div class="health">
+            <div class="badge green" onclick="filterStores('Healthy')">🟢 Healthy (<span id="hCount"></span>)</div>
+            <div class="badge yellow" onclick="filterStores('Watch')">🟡 Watch (<span id="wCount"></span>)</div>
+            <div class="badge red" onclick="filterStores('Impacted')">🔴 Impacted (<span id="iCount"></span>)</div>
+            <div class="badge" onclick="filterStores('All')">All Stores</div>
+        </div>
+    </div>
+
+    <!-- STORE TABLE -->
+    <div class="card">
+        <h3>Store Overview</h3>
+        <table id="storeTable">
+            <thead>
+                <tr>
+                    <th>Store</th>
+                    <th>Txn Volume</th>
+                    <th>Approval %</th>
+                    <th>Vs Yesterday</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- STORE DETAIL -->
+    <div class="card" id="storeDetail" style="display:none;">
+        <h3 id="storeTitle"></h3>
+        <div class="health">
+            <div class="badge red" onclick="filterTerminals('Impacted')">Impacted</div>
+            <div class="badge yellow" onclick="filterTerminals('Degraded')">Degraded</div>
+            <div class="badge green" onclick="filterTerminals('Healthy')">Healthy</div>
+            <div class="badge" onclick="filterTerminals('All')">All Terminals</div>
+        </div>
+        <table id="terminalTable">
+            <thead>
+                <tr>
+                    <th>Terminal</th>
+                    <th>Txn</th>
+                    <th>Approval %</th>
+                    <th>Top Decline Reason</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+// ---------------- DUMMY DATA ----------------
+const stores = Array.from({ length: 200 }, (_, i) => {
+    const approval = Math.floor(Math.random() * 20) + 75;
+    return {
+        id: 'Store-' + (i + 1),
+        txn: Math.floor(Math.random() * 5000) + 500,
+        approval,
+        yesterday: approval - (Math.floor(Math.random() * 6) - 3),
+        terminals: Array.from({ length: Math.floor(Math.random() * 50) + 50 }, (_, t) => {
+            const a = Math.floor(Math.random() * 30) + 65;
+            return {
+                id: 'T-' + (t + 1),
+                txn: Math.floor(Math.random() * 300),
+                approval: a,
+                reason: a < 75 ? 'HOST_TIMEOUT' : '—'
+            }
+        })
+    }
+});
+
+let storeFilter = 'All';
+let terminalFilter = 'All';
+let selectedStore = null;
+
+// ---------------- INIT ----------------
+function init() {
+    document.getElementById('totalStores').innerText = stores.length;
+    document.getElementById('totalTx').innerText = stores.reduce((a, b) => a + b.txn, 0);
+    const avgApproval = Math.round(stores.reduce((a, b) => a + b.approval, 0) / stores.length);
+    document.getElementById('approval').innerText = avgApproval + '%';
+    document.getElementById('decline').innerText = (100 - avgApproval) + '%';
+
+    document.getElementById('hCount').innerText = stores.filter(s => s.approval >= 90).length;
+    document.getElementById('wCount').innerText = stores.filter(s => s.approval >= 80 && s.approval < 90).length;
+    document.getElementById('iCount').innerText = stores.filter(s => s.approval < 80).length;
+
+    renderStores();
+}
+
+// ---------------- STORE TABLE ----------------
+function filterStores(type) {
+    storeFilter = type;
+    renderStores();
+}
+
+function renderStores() {
+    const tbody = document.querySelector('#storeTable tbody');
+    tbody.innerHTML = '';
+
+    stores.filter(s => {
+        if (storeFilter === 'Healthy') return s.approval >= 90;
+        if (storeFilter === 'Watch') return s.approval >= 80 && s.approval < 90;
+        if (storeFilter === 'Impacted') return s.approval < 80;
+        return true;
+    }).slice(0, 25).forEach(s => {
+        const status = s.approval >= 90 ? 'Healthy' : s.approval >= 80 ? 'Watch' : 'Impacted';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${s.id}</td><td>${s.txn}</td><td>${s.approval}%</td><td>${s.approval - s.yesterday}%</td><td><span class="pill ${status === 'Healthy' ? 'green' : status === 'Watch' ? 'yellow' : 'red'}">${status}</span></td>`;
+        tr.onclick = () => openStore(s);
+        tbody.appendChild(tr);
+    });
+}
+
+// ---------------- STORE DETAIL ----------------
+function openStore(store) {
+    selectedStore = store;
+    document.getElementById('storeDetail').style.display = 'block';
+    document.getElementById('storeTitle').innerText = store.id + ' — Terminal View';
+    filterTerminals('Impacted');
+}
+
+function filterTerminals(type) {
+    terminalFilter = type;
+    renderTerminals();
+}
+
+function renderTerminals() {
+    const tbody = document.querySelector('#terminalTable tbody');
+    tbody.innerHTML = '';
+
+    selectedStore.terminals.filter(t => {
+        if (terminalFilter === 'Impacted') return t.approval < 75;
+        if (terminalFilter === 'Degraded') return t.approval >= 75 && t.approval < 85;
+        if (terminalFilter === 'Healthy') return t.approval >= 85;
+        return true;
+    }).forEach(t => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${t.id}</td><td>${t.txn}</td><td>${t.approval}%</td><td>${t.reason}</td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+init();
+</script>
+</body>
+</html>
