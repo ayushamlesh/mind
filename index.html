@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Enterprise Store Monitor</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:20px;
+}
+
+.header{
+display:flex;
+gap:40px;
+margin-bottom:15px;
+font-size:18px;
+font-weight:bold;
+}
+
+.container{
+display:flex;
+gap:20px;
+}
+
+.left{
+width:75%;
+}
+
+.right{
+width:25%;
+}
+
+.store-grid{
+display:grid;
+grid-template-columns:repeat(15,1fr);
+gap:6px;
+margin-top:10px;
+}
+
+.store{
+padding:8px;
+text-align:center;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+color:white;
+}
+
+.active{background:#2ecc71;}
+.inactive{background:#e74c3c;}
+.low{background:#f1c40f;color:black;}
+
+.alert-box{
+background:white;
+padding:10px;
+border-radius:6px;
+box-shadow:0 0 5px #ccc;
+}
+
+.alert{
+color:red;
+margin-bottom:6px;
+}
+
+.unit-grid{
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:6px;
+margin-top:10px;
+}
+
+.unit{
+padding:10px;
+border-radius:6px;
+text-align:center;
+color:white;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Enterprise Store Monitor</h2>
+
+<div class="header">
+<div>Total Stores: <span id="totalStores">300</span></div>
+<div>Active: <span id="activeStores">0</span></div>
+<div>Inactive: <span id="inactiveStores">0</span></div>
+</div>
+
+<div>
+
+Show activity in last:
+
+<input type="range" min="20" max="720" step="10" value="60" id="slider">
+
+<span id="sliderValue">60 minutes</span>
+
+</div>
+
+<div class="container">
+
+<div class="left">
+
+<h3>Store Status</h3>
+
+<div class="store-grid" id="storeGrid"></div>
+
+<h3>Transaction Trend</h3>
+
+<canvas id="txnChart" height="120"></canvas>
+
+<div id="unitSection"></div>
+
+</div>
+
+<div class="right">
+
+<div class="alert-box">
+
+<h3>Alerts</h3>
+
+<div id="alerts"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const totalStores=300;
+const stores=[];
+const unitsPerStore=6;
+
+function generateData(){
+
+for(let i=1;i<=totalStores;i++){
+
+let lastTxn=Math.floor(Math.random()*800);
+
+let units=[];
+
+for(let u=1;u<=unitsPerStore;u++){
+
+units.push({
+id:u,
+lastTxn:Math.floor(Math.random()*500),
+count:Math.floor(Math.random()*20)
+});
+
+}
+
+stores.push({
+id:i,
+lastTxn:lastTxn,
+count:Math.floor(Math.random()*50),
+units:units
+});
+
+}
+
+}
+
+function renderStores(window){
+
+const grid=document.getElementById("storeGrid");
+const alertBox=document.getElementById("alerts");
+
+grid.innerHTML="";
+alertBox.innerHTML="";
+
+let active=0;
+let inactive=0;
+
+stores.forEach(s=>{
+
+const div=document.createElement("div");
+
+div.classList.add("store");
+
+if(s.lastTxn<=window){
+
+div.classList.add("active");
+active++;
+
+}
+else{
+
+div.classList.add("inactive");
+inactive++;
+
+let alert=document.createElement("div");
+alert.classList.add("alert");
+alert.innerText="Store "+s.id+" inactive";
+
+alertBox.appendChild(alert);
+
+}
+
+div.innerText=s.id.toString().padStart(3,"0");
+
+div.onclick=()=>showUnits(s);
+
+grid.appendChild(div);
+
+});
+
+document.getElementById("activeStores").innerText=active;
+document.getElementById("inactiveStores").innerText=inactive;
+
+}
+
+function showUnits(store){
+
+const section=document.getElementById("unitSection");
+
+section.innerHTML="<h3>Store "+store.id+" Units</h3>";
+
+const grid=document.createElement("div");
+grid.classList.add("unit-grid");
+
+store.units.forEach(u=>{
+
+let div=document.createElement("div");
+
+div.classList.add("unit");
+
+if(u.lastTxn<120)
+div.style.background="#2ecc71";
+else
+div.style.background="#e74c3c";
+
+div.innerText="Unit "+u.id;
+
+div.title=
+"Unit "+u.id+
+"\nLast Txn: "+u.lastTxn+" mins"+
+"\nTxn Count: "+u.count;
+
+grid.appendChild(div);
+
+});
+
+section.appendChild(grid);
+
+}
+
+function createChart(){
+
+const ctx=document.getElementById("txnChart");
+
+let labels=[];
+let data=[];
+
+for(let i=0;i<12;i++){
+
+labels.push(i*2+"h");
+
+data.push(Math.floor(Math.random()*500));
+
+}
+
+new Chart(ctx,{
+
+type:'line',
+
+data:{
+labels:labels,
+datasets:[{
+label:'Transactions',
+data:data,
+fill:false
+}]
+}
+
+});
+
+}
+
+const slider=document.getElementById("slider");
+
+slider.addEventListener("input",function(){
+
+let v=this.value;
+
+document.getElementById("sliderValue").innerText=v+" minutes";
+
+renderStores(v);
+
+});
+
+generateData();
+renderStores(60);
+createChart();
+
+</script>
+
+</body>
+
+</html>
