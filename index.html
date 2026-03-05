@@ -1,0 +1,328 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Enterprise Store Monitor</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f8;
+margin:20px;
+}
+
+h2{
+margin-bottom:10px;
+}
+
+.storeGrid{
+display:grid;
+grid-template-columns: repeat(15,1fr);
+gap:6px;
+}
+
+.store{
+padding:10px;
+border-radius:5px;
+text-align:center;
+color:white;
+cursor:pointer;
+font-size:12px;
+}
+
+.online{ background:#2ecc71 }
+.offline{ background:#e74c3c }
+
+.popup{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:700px;
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0 0 15px rgba(0,0,0,0.2);
+z-index:1000;
+}
+
+.unitGrid{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:6px;
+margin-top:15px;
+}
+
+.unit{
+padding:8px;
+border-radius:4px;
+text-align:center;
+color:white;
+font-size:12px;
+}
+
+.closeBtn{
+float:right;
+cursor:pointer;
+font-size:18px;
+}
+
+.sliderBox{
+margin-bottom:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Enterprise Store Monitor</h2>
+
+<div class="sliderBox">
+Store Status Time:
+<input type="range" id="storeSlider" min="10" max="720" value="60">
+<span id="storeTime">60 min</span>
+</div>
+
+<div id="storeGrid" class="storeGrid"></div>
+
+<br>
+
+<canvas id="enterpriseGraph" height="100"></canvas>
+
+
+<div id="popup" class="popup">
+
+<span class="closeBtn" onclick="closePopup()">X</span>
+
+<h3 id="popupTitle"></h3>
+
+<div class="sliderBox">
+Unit Time:
+<input type="range" id="unitSlider" min="3" max="360" value="30">
+<span id="unitTime">30 min</span>
+</div>
+
+<canvas id="storeGraph"></canvas>
+
+<div id="unitGrid" class="unitGrid"></div>
+
+</div>
+
+
+<script>
+
+const stores = 300;
+const units = 20;
+
+let allData = [];
+let currentStore = 0;
+
+function generateData(){
+
+for(let s=1;s<=stores;s++){
+
+for(let u=1;u<=units;u++){
+
+for(let m=0;m<=720;m+=5){
+
+allData.push({
+store:s,
+unit:u,
+time:Date.now()-(m*60000),
+tran:Math.floor(Math.random()*4)
+});
+
+}
+
+}
+
+}
+
+}
+
+generateData();
+
+
+
+const storeSlider=document.getElementById("storeSlider");
+
+storeSlider.oninput=function(){
+
+document.getElementById("storeTime").innerText=this.value+" min";
+
+renderStores(this.value);
+
+};
+
+
+
+function renderStores(minutes){
+
+const cutoff=Date.now()-minutes*60000;
+
+const grid=document.getElementById("storeGrid");
+
+grid.innerHTML="";
+
+let graph=[];
+
+for(let s=1;s<=stores;s++){
+
+let data=allData.filter(x=>x.store==s && x.time>=cutoff);
+
+let total=data.reduce((a,b)=>a+b.tran,0);
+
+graph.push(total);
+
+let div=document.createElement("div");
+
+div.className="store "+(total>0?"online":"offline");
+
+div.innerText="Store "+s;
+
+div.onclick=()=>openStore(s);
+
+grid.appendChild(div);
+
+}
+
+drawEnterpriseGraph(graph);
+
+}
+
+
+
+let enterpriseChart;
+
+function drawEnterpriseGraph(data){
+
+if(enterpriseChart) enterpriseChart.destroy();
+
+enterpriseChart=new Chart(
+document.getElementById("enterpriseGraph"),
+{
+type:'line',
+data:{
+labels:data.map((_,i)=>i+1),
+datasets:[{
+label:'Transactions',
+data:data
+}]
+}
+});
+
+}
+
+
+
+function openStore(storeId){
+
+currentStore=storeId;
+
+document.getElementById("popup").style.display="block";
+
+document.getElementById("popupTitle").innerText="Store "+storeId;
+
+renderUnits();
+
+}
+
+
+
+const unitSlider=document.getElementById("unitSlider");
+
+unitSlider.oninput=function(){
+
+document.getElementById("unitTime").innerText=this.value+" min";
+
+renderUnits();
+
+};
+
+
+
+let storeChart;
+
+function renderUnits(){
+
+const minutes=unitSlider.value;
+
+const cutoff=Date.now()-minutes*60000;
+
+const data=allData.filter(x=>x.store==currentStore && x.time>=cutoff);
+
+let unitTotals={};
+
+data.forEach(x=>{
+unitTotals[x.unit]=(unitTotals[x.unit]||0)+x.tran;
+});
+
+const grid=document.getElementById("unitGrid");
+
+grid.innerHTML="";
+
+for(let u=1;u<=units;u++){
+
+let tran=unitTotals[u]||0;
+
+let div=document.createElement("div");
+
+div.className="unit "+(tran>0?"online":"offline");
+
+div.innerText="Unit "+u;
+
+div.title="Transactions: "+tran;
+
+grid.appendChild(div);
+
+}
+
+drawStoreGraph(unitTotals);
+
+}
+
+
+
+function drawStoreGraph(data){
+
+if(storeChart) storeChart.destroy();
+
+storeChart=new Chart(
+document.getElementById("storeGraph"),
+{
+type:'bar',
+data:{
+labels:Object.keys(data),
+datasets:[{
+label:'Transactions',
+data:Object.values(data)
+}]
+}
+});
+
+}
+
+
+
+function closePopup(){
+
+document.getElementById("popup").style.display="none";
+
+}
+
+
+
+renderStores(60);
+
+</script>
+
+</body>
+</html>
+```
