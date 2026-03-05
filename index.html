@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Enterprise Store Monitor</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:20px;
+}
+
+.store-grid{
+display:grid;
+grid-template-columns:repeat(15,1fr);
+gap:6px;
+}
+
+.store{
+padding:10px;
+text-align:center;
+border-radius:6px;
+font-weight:bold;
+color:white;
+cursor:pointer;
+}
+
+.active{background:#2ecc71;}
+.inactive{background:#e74c3c;}
+.low{background:#f1c40f;color:black;}
+
+.popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:20px;
+width:600px;
+border-radius:8px;
+box-shadow:0 0 10px #888;
+display:none;
+}
+
+.unit-grid{
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:6px;
+margin-top:10px;
+}
+
+.unit{
+padding:10px;
+border-radius:6px;
+text-align:center;
+color:white;
+font-weight:bold;
+}
+
+.close{
+float:right;
+cursor:pointer;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Enterprise Store Monitor</h2>
+
+<div class="store-grid" id="storeGrid"></div>
+
+<div class="popup" id="popup">
+
+<span class="close" onclick="closePopup()">X</span>
+
+<h3 id="storeTitle"></h3>
+
+<div>
+
+Activity Window
+
+<input type="range" min="20" max="720" value="60" id="storeSlider">
+
+<span id="storeSliderValue">60 min</span>
+
+</div>
+
+<h4>Units</h4>
+
+<div class="unit-grid" id="unitGrid"></div>
+
+<h4>Transaction Trend</h4>
+
+<canvas id="storeChart" height="120"></canvas>
+
+</div>
+
+<script>
+
+const stores=[];
+let chart=null;
+
+function generateData(){
+
+for(let i=1;i<=300;i++){
+
+let units=[];
+
+for(let u=1;u<=6;u++){
+
+units.push({
+id:u,
+lastTxn:Math.floor(Math.random()*500),
+count:Math.floor(Math.random()*30)
+});
+
+}
+
+stores.push({
+id:i,
+lastTxn:Math.floor(Math.random()*800),
+units:units
+});
+
+}
+
+}
+
+function renderStores(){
+
+const grid=document.getElementById("storeGrid");
+
+stores.forEach(s=>{
+
+let div=document.createElement("div");
+
+div.classList.add("store");
+
+if(s.lastTxn<60)
+div.classList.add("active");
+else
+div.classList.add("inactive");
+
+div.innerText=s.id.toString().padStart(3,"0");
+
+div.onclick=()=>openStore(s);
+
+grid.appendChild(div);
+
+});
+
+}
+
+function openStore(store){
+
+document.getElementById("popup").style.display="block";
+
+document.getElementById("storeTitle").innerText="Store "+store.id;
+
+renderUnits(store,60);
+
+createGraph();
+
+}
+
+function closePopup(){
+
+document.getElementById("popup").style.display="none";
+
+}
+
+function renderUnits(store,window){
+
+const grid=document.getElementById("unitGrid");
+
+grid.innerHTML="";
+
+store.units.forEach(u=>{
+
+let div=document.createElement("div");
+
+div.classList.add("unit");
+
+if(u.lastTxn<window)
+div.style.background="#2ecc71";
+else
+div.style.background="#e74c3c";
+
+div.innerText="Unit "+u.id;
+
+div.title="Last Txn "+u.lastTxn+" min";
+
+grid.appendChild(div);
+
+});
+
+}
+
+function createGraph(){
+
+let labels=[];
+let data=[];
+
+for(let i=0;i<12;i++){
+
+labels.push(i*2+"h");
+data.push(Math.floor(Math.random()*100));
+
+}
+
+if(chart)
+chart.destroy();
+
+chart=new Chart(document.getElementById("storeChart"),{
+
+type:"line",
+
+data:{
+labels:labels,
+datasets:[{
+label:"Transactions",
+data:data
+}]
+}
+
+});
+
+}
+
+const slider=document.getElementById("storeSlider");
+
+slider.addEventListener("input",function(){
+
+let v=this.value;
+
+document.getElementById("storeSliderValue").innerText=v+" min";
+
+let storeName=document.getElementById("storeTitle").innerText;
+
+let id=parseInt(storeName.replace("Store ",""));
+
+let store=stores.find(x=>x.id==id);
+
+renderUnits(store,v);
+
+createGraph();
+
+});
+
+generateData();
+renderStores();
+
+</script>
+
+</body>
+</html>
